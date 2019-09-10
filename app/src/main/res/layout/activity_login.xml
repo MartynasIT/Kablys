@@ -16,7 +16,7 @@
 
     <EditText
         android:id="@+id/edit_username"
-        android:layout_width="wrap_content"
+        android:layout_width="190dp"
         android:layout_height="45dp"
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/username"
@@ -25,12 +25,21 @@
 
     <EditText
         android:id="@+id/edit_passwd"
-        android:layout_width="wrap_content"
+        android:layout_width="190dp"
         android:layout_height="45dp"
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/passwd"
         android:drawablePadding="5dp"
         android:hint="@string/password"/>
+
+    <EditText
+        android:id="@+id/edit_comf_passwd"
+        android:layout_width="190dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/passwd"
+        android:drawablePadding="5dp"
+        android:hint="@string/comf_passwd"/>
 
     <Button
         android:id="@+id/btn_login"
@@ -49,7 +58,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/text_unregistred"/>
         <TextView
-            android:id="@+id/text_login"
+            android:id="@+id/text_register"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:textStyle="bold"

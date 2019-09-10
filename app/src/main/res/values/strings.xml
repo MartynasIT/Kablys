@@ -8,8 +8,7 @@
     <string name="comf_passwd">Patvirtinti</string>
     <string name="already_registered">Užsiregistravęs?</string>
     <string name="already_registred">Užsiregistravęs?</string>
-    <string name="login">Prisijungti</string>
     <string name="btn_register">Prisiregistruoti</string>
     <string name="text_unregistred">Neprisiregistravęs?</string>
-    <string name="register">Prisiregistruoti</string>
+    <string name="text_login">Prisijungti</string>
 </resources>
