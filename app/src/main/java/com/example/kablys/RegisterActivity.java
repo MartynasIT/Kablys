@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         TextPasswd = findViewById(R.id.edit_passwd);
         ComfTextPasswd = findViewById(R.id.edit_comf_passwd);
         ButtonRegister = findViewById(R.id.btn_register);
-        TextViewlogin = findViewById(R.id.text_login);
+        TextViewlogin = findViewById(R.id.text_register);
 
         TextViewlogin.setOnClickListener(new View.OnClickListener()
         {
@@ -48,18 +48,35 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = TextUsername.getText().toString().trim();
                 String password = TextPasswd.getText().toString().trim();
                 String conf_passwd = ComfTextPasswd.getText().toString().trim();
+                int k = 0;
 
-                if (!password.equals(conf_passwd)) {
+                if (username.isEmpty() || password.isEmpty() || conf_passwd.isEmpty()) {
+
+                    Toast.makeText(RegisterActivity.this, "Įveskite visus duomenis!",
+                            Toast.LENGTH_SHORT).show();
+                    k = 1;
+                }
+
+                else if (!password.equals(conf_passwd)) {
                     Toast.makeText(RegisterActivity.this, "Slaptažodžiai neatitinka!",
                             Toast.LENGTH_SHORT).show();
+                    k = 1;
                 }
 
                 else if (db.UserExists(username)) {
                     Toast.makeText(RegisterActivity.this, "Toksai vartotojas egzistuoja!",
                             Toast.LENGTH_SHORT).show();
+                    k = 1;
                 }
 
-                if (password.equals(conf_passwd) && !db.UserExists(username)) {
+                else if (password.length() <= 6)
+                {
+                    Toast.makeText(RegisterActivity.this, "Slaptažodis turi būti ilgesnis nei 6 simboliai!",
+                            Toast.LENGTH_SHORT).show();
+                    k = 1;
+                }
+
+                if ( k!=1) {
                     Toast.makeText(RegisterActivity.this, "Prisisegistruota!",
                             Toast.LENGTH_SHORT).show();
                     long val = db.addUser(username, password);

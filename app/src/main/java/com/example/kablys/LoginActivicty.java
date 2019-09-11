@@ -16,6 +16,7 @@ public class LoginActivicty extends AppCompatActivity {
     Button ButtonLogin;
     TextView TextViewRegister;
     DatabaseAPI db;
+    long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,9 @@ public class LoginActivicty extends AppCompatActivity {
             {
                String user = TextUsername.getText().toString().trim();
                String passwd = TextPasswd.getText().toString().trim();
-               boolean exists = db.CheckUser(user,passwd);
-               if(exists ==  true){
+               long res = db.CheckUser(user,passwd);
+               if(res > 0){
+                   id = res;
                    Toast.makeText(LoginActivicty.this, "Prisijungta!",
                            Toast.LENGTH_SHORT).show();
                }

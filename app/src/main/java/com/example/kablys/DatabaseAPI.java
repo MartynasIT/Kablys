@@ -38,28 +38,26 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("Username", user);
         contentValues.put("password", password);
-        long result = db.insert("Users", null, contentValues);
+        long result = db.insert(TableName, null, contentValues);
         db.close();
         return  result;
 
     }
 
-    public boolean CheckUser (String username, String password){
-        String [] columns = {Col_1};
+    public long CheckUser (String username, String password){
+        long id = 0;
         SQLiteDatabase db  = getReadableDatabase();
-        String selection = Col_2 + "=?" + " and " + Col_3 + "?=";
-        String [] select_args =  {username, password};
-        Cursor cursor = db.query(TableName, columns, selection,
-                select_args, null, null, null);
-        int count = cursor.getCount();
+        Cursor cursor = db.rawQuery("SELECT ID FROM Users WHERE Username = ? AND Password = ?", new String[] {username, password});
+        while (cursor.moveToNext())
+        {
+            id = cursor.getInt(0);
+        }
         cursor.close();
-        if(count > 0)
-            return  true;
-        else
-            return  false;
+        db.close();
 
+        return  id;
     }
-    /*
+
     public boolean UserExists (String username){
         String [] columns = {Col_1};
         SQLiteDatabase db  = getReadableDatabase();
@@ -76,5 +74,5 @@ public class DatabaseAPI extends SQLiteOpenHelper {
 
     }
 
-     */
+
 }

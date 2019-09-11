@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".LoginActivicty"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    tools:context=".RegisterActivity">
+    android:gravity="center_horizontal">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -20,6 +20,8 @@
         android:layout_height="45dp"
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/username"
+        android:singleLine="true"
+        android:nextFocusForward="@+id/edit_passwd"
         android:drawablePadding="5dp"
         android:hint="@string/username"/>
 
@@ -28,30 +30,41 @@
         android:layout_width="190dp"
         android:layout_height="45dp"
         android:layout_marginTop="20dp"
+        android:singleLine="true"
+        android:nextFocusForward="@+id/edit_comf_passwd"
         android:drawableLeft="@drawable/passwd"
         android:drawablePadding="5dp"
         android:hint="@string/password"/>
 
+    <EditText
+        android:id="@+id/edit_comf_passwd"
+        android:layout_width="190dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/passwd"
+        android:singleLine="true"
+        android:nextFocusForward="@+id/btn_register"
+        android:drawablePadding="5dp"
+        android:hint="@string/comf_passwd"/>
 
     <Button
         android:id="@+id/btn_register"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="20dp"
-        android:text="@string/btn_register"/>
+        android:text="@string/btn_text_register"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginTop="10dp"
-            android:text="@string/already_registred"/>
+            android:text="@string/already_registered"/>
         <TextView
-            android:id="@+id/text_login"
+            android:id="@+id/text_register"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:textStyle="bold"
@@ -60,5 +73,4 @@
             android:text="@string/text_login"/>
 
     </LinearLayout>
-
 </LinearLayout>

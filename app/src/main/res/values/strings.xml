@@ -6,9 +6,12 @@
     <string name="unregistered">Neprisiregistraves?</string>
     <string name="register">Prisiregistruoti</string>
     <string name="comf_passwd">Patvirtinti</string>
-    <string name="already_registered">Užsiregistravęs?</string>
-    <string name="already_registred">Užsiregistravęs?</string>
     <string name="btn_register">Prisiregistruoti</string>
-    <string name="text_unregistred">Neprisiregistravęs?</string>
+    <string name="btn_login">Prisijungti</string>
+    <string name="text_not_registred">Neužsiregistravęs?</string>
+    <string name="text_register">Užsiregistruoti</string>
     <string name="text_login">Prisijungti</string>
+    <string name="not_registred">Neužsiregistravęs?</string>
+    <string name="btn_text_register">Užseregistruoti</string>
+    <string name="already_registered">Užsiregistravęs?</string>
 </resources>
