@@ -14,4 +14,10 @@
     <string name="not_registred">Neužsiregistravęs?</string>
     <string name="btn_text_register">Užseregistruoti</string>
     <string name="already_registered">Užsiregistravęs?</string>
+    <string name="menu_weather">Orai</string>
+    <string name="menu_account">Paskyra</string>
+    <string name="menu_logout">Atsijungti</string>
+    <string name="menu_share">Pasidalinti</string>
+    <string name="menu_facebook">Facebook</string>
+    <string name="menu_communication">Komunikacija</string>
 </resources>

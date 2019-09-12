@@ -1,9 +1,10 @@
 package com.example.kablys;
 
-import androidx.appcompat.app.AppCompatActivity;
+
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +17,12 @@ public class LoginActivicty extends AppCompatActivity {
     Button ButtonLogin;
     TextView TextViewRegister;
     DatabaseAPI db;
-    long id;
+    private static long id;
+
+    public  static  long getID ()
+    {
+        return id;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,8 @@ public class LoginActivicty extends AppCompatActivity {
                    id = res;
                    Toast.makeText(LoginActivicty.this, "Prisijungta!",
                            Toast.LENGTH_SHORT).show();
+                   Intent SuccessIntent = new Intent(LoginActivicty.this, WeatherActivity.class);
+                   startActivity(SuccessIntent);
                }
 
                else {
@@ -63,5 +71,7 @@ public class LoginActivicty extends AppCompatActivity {
 
         });
 
+
     }
+
 }
