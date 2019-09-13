@@ -22,4 +22,5 @@
     <string name="menu_communication">Komunikacija</string>
     <string name="open_navigation">Atidaryti Meniu</string>
     <string name="close_navigation">Uždaryti Meniu</string>
+    <string name="toolbar_text">Orai</string>
 </resources>

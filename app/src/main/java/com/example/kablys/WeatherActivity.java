@@ -1,14 +1,17 @@
 package com.example.kablys;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
+import android.view.MenuItem;
 
-public class WeatherActivity extends AppCompatActivity {
+
+public class WeatherActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     private static long id = LoginActivicty.getID();
 
@@ -26,8 +29,30 @@ public class WeatherActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        Toast.makeText(WeatherActivity.this, Long.toString(id),
-                Toast.LENGTH_SHORT).show();
+        NavigationView navView = findViewById(R.id.navigation_view);
+        navView.setNavigationItemSelectedListener(this);
+
+
+        /*
+        if(savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new WeatherFragment()).commit();
+            navView.setCheckedItem(R.id.nav_account);
+        }
+
+         */
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.nav_account:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new WeatherFragment()).commit();
+                break;
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
