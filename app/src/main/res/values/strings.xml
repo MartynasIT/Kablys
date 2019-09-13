@@ -20,4 +20,6 @@
     <string name="menu_share">Pasidalinti</string>
     <string name="menu_facebook">Facebook</string>
     <string name="menu_communication">Komunikacija</string>
+    <string name="open_navigation">Atidaryti Meniu</string>
+    <string name="close_navigation">Uždaryti Meniu</string>
 </resources>
