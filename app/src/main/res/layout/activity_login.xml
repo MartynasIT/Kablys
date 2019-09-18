@@ -33,6 +33,7 @@
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/passwd"
         android:drawablePadding="5dp"
+        android:inputType="textPassword"
         android:singleLine="true"
         android:nextFocusForward="@+id/btn_login"
         android:hint="@string/password"/>

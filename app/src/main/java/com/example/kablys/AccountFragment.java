@@ -9,19 +9,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 
-public class WeatherFragment extends Fragment {
+public class AccountFragment extends Fragment {
+    Button ButtonLogin;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle SavedInstanceState)
     {
-        return inflater.inflate(R.layout.fragment_weather, container, false);
+        return inflater.inflate(R.layout.fragment_account, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
+        ButtonLogin = view.findViewById(R.id.lol);
     }
+
 
 }

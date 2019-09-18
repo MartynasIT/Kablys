@@ -23,4 +23,5 @@
     <string name="open_navigation">Atidaryti Meniu</string>
     <string name="close_navigation">Uždaryti Meniu</string>
     <string name="toolbar_text">Orai</string>
+    <string name="email">Emailas</string>
 </resources>

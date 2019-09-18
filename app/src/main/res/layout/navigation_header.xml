@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@android:color/holo_blue_dark"
     android:gravity="bottom"
@@ -13,16 +14,33 @@
         android:adjustViewBounds="true"
         android:maxWidth="80dp"
         android:maxHeight="80dp"
+        android:id="@+id/drawer_icon"
         android:src="@drawable/fish_icon"/>
 
     <TextView
+        android:id="@+id/drawer_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="7dp"
-        android:text="Unknown User"
         android:gravity="center"
+        android:paddingTop="7dp"
+        android:layout_marginLeft="16dp"
+        android:text=""
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+        app:fontFamily="serif"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/drawer_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="7dp"
+        android:text=""
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@android:color/white"
+        app:fontFamily="serif"
+        android:textSize="12sp"/>
 
 
 </LinearLayout>

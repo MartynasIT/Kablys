@@ -14,6 +14,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
     public static final String Col_1="ID";
     public static final String Col_2="Username";
     public static final String Col_3="Password";
+    public static final String Col_4="Email";
 
     public DatabaseAPI(@Nullable Context context) {
         super(context, DatabaseName, null, 1);
@@ -22,7 +23,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("Create Table Users (ID Integer PRIMARY KEY AUTOINCREMENT," +
-                " Username Text, Password Text)");
+                " Username Text, Password Text, Email Text)");
 
     }
 
@@ -33,29 +34,46 @@ public class DatabaseAPI extends SQLiteOpenHelper {
 
     }
 
-    public  long addUser (String user, String password) {
+    public  long addUser (String user, String password, String email) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("Username", user);
         contentValues.put("password", password);
+        contentValues.put("Email", email);
         long result = db.insert(TableName, null, contentValues);
         db.close();
         return  result;
 
     }
 
-    public long CheckUser (String username, String password){
-        long id = 0;
+    public String CheckUser (String username, String password){
+        String email="";
         SQLiteDatabase db  = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT ID FROM Users WHERE Username = ? AND Password = ?", new String[] {username, password});
+        Cursor cursor = db.rawQuery("SELECT Email FROM Users WHERE Username = ? AND Password = ?", new String[] {username, password});
         while (cursor.moveToNext())
         {
-            id = cursor.getInt(0);
+            email = cursor.getString(0);
         }
         cursor.close();
         db.close();
 
-        return  id;
+        return  email;
+    }
+
+    public boolean EmailExists (String email){
+        String [] columns = {Col_1};
+        SQLiteDatabase db  = getReadableDatabase();
+        String selection = Col_4 + "=?";
+        String [] select_args =  {email};
+        Cursor cursor = db.query(TableName, columns, selection,
+                select_args, null, null, null);
+        int count = cursor.getCount();
+        cursor.close();
+        if(count > 0)
+            return  true;
+        else
+            return  false;
+
     }
 
     public boolean UserExists (String username){

@@ -4,7 +4,7 @@
     tools:showIn="navigation_view">
 
    <group android:checkableBehavior="single">
-       <item android:id="@+id/navigation_view"
+       <item android:id="@+id/nav_weather"
            android:icon="@drawable/ic_sun"
            android:title="@string/menu_weather"/>
 
@@ -12,7 +12,8 @@
            android:icon="@drawable/ic_account"
            android:title="@string/menu_account"/>
 
-       <item android:title="@string/menu_logout"/>
+       <item android:title="@string/menu_logout"
+             android:id="@+id/nav_logout"/>
    </group>
 
     <item android:title="@string/menu_communication">

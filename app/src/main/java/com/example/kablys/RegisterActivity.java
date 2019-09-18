@@ -9,14 +9,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText TextUsername;
     EditText TextPasswd;
+    EditText TextEmail;
     EditText ComfTextPasswd;
     Button ButtonRegister;
     TextView TextViewlogin;
     DatabaseAPI db;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
         db = new DatabaseAPI(this);
         TextUsername = findViewById(R.id.edit_username);
         TextPasswd = findViewById(R.id.edit_passwd);
+        TextEmail = findViewById(R.id.edit_email);
         ComfTextPasswd = findViewById(R.id.edit_comf_passwd);
         ButtonRegister = findViewById(R.id.btn_register);
         TextViewlogin = findViewById(R.id.text_register);
@@ -41,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         });
 
+
         ButtonRegister.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -48,9 +56,12 @@ public class RegisterActivity extends AppCompatActivity {
                 String username = TextUsername.getText().toString().trim();
                 String password = TextPasswd.getText().toString().trim();
                 String conf_passwd = ComfTextPasswd.getText().toString().trim();
+                String email = TextEmail.getText().toString().trim();
+                Boolean is_email = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+
                 int k = 0;
 
-                if (username.isEmpty() || password.isEmpty() || conf_passwd.isEmpty()) {
+                if (username.isEmpty() || password.isEmpty() || conf_passwd.isEmpty() || email.isEmpty()) {
 
                     Toast.makeText(RegisterActivity.this, "Įveskite visus duomenis!",
                             Toast.LENGTH_SHORT).show();
@@ -76,10 +87,24 @@ public class RegisterActivity extends AppCompatActivity {
                     k = 1;
                 }
 
+                else if (!is_email)
+                {
+                    Toast.makeText(RegisterActivity.this, "Blogas emailas!",
+                            Toast.LENGTH_SHORT).show();
+                    k = 1;
+                }
+
+                else if (db.EmailExists(email))
+                {
+                    Toast.makeText(RegisterActivity.this, "Toks emailas jau egzistuoja!",
+                            Toast.LENGTH_SHORT).show();
+                    k = 1;
+                }
+
                 if ( k!=1) {
                     Toast.makeText(RegisterActivity.this, "Prisisegistruota!",
                             Toast.LENGTH_SHORT).show();
-                    long val = db.addUser(username, password);
+                    long val = db.addUser(username, makeMD5(password), email);
                     if (val > 0) {
                         Intent Login = new Intent(RegisterActivity.this, LoginActivicty.class);
                         startActivity(Login);
@@ -92,5 +117,20 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
         });
+    }
+    public String makeMD5(String passwd) {
+        try {
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            byte[] Digest = md5.digest(passwd.getBytes());
+            BigInteger number = new BigInteger(1, Digest);
+            String hash = number.toString(16);
+
+            while (hash.length() < 32)
+                hash = "0" + hash;
+
+            return hash;
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
     }
 }
