@@ -43,16 +43,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         email.setText(Session.get_email());
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new WeatherFragment()).commit();
-
-        /*
-        if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new WeatherFragment()).commit();
-            navView.setCheckedItem(R.id.nav_account);
-        }
-
-         */
-
     }
 
     @Override

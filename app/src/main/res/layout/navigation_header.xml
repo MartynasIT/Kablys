@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="7dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="14dp"
         android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
@@ -40,7 +40,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
         app:fontFamily="serif"
-        android:textSize="12sp"/>
+        android:textSize="9sp"/>
 
 
 </LinearLayout>
