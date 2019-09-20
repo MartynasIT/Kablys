@@ -42,15 +42,15 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         user.setText(Session.get_username());
         email.setText(Session.get_email());
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new WeatherFragment()).commit();
+                new MapFragment()).commit();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.nav_account:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new AccountFragment()).commit();
+                Intent MapIntent = new Intent(DrawerActivity.this, MapActivity.class);
+                startActivity(MapIntent);
                 break;
             case R.id.nav_logout:
                 Session = new SessionManager(this);
@@ -62,7 +62,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
             case R.id.nav_weather:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new WeatherFragment()).commit();
+                        new MapFragment()).commit();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

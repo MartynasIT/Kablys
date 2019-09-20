@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "78600553081",
+    "firebase_url": "https://kablys-5e76a.firebaseio.com",
+    "project_id": "kablys-5e76a",
+    "storage_bucket": "kablys-5e76a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78600553081:android:3fd23a74254048a5da4aa8",
+        "android_client_info": {
+          "package_name": "com.example.kablys"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "78600553081-ttovr8s2olt7klf69eq26d1gk9lguolo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJqSAz3o0CN7Coh5BuaTC4QSrfebgdX-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78600553081-ttovr8s2olt7klf69eq26d1gk9lguolo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

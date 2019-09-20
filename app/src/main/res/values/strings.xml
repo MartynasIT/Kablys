@@ -24,4 +24,5 @@
     <string name="close_navigation">Uždaryti Meniu</string>
     <string name="toolbar_text">Orai</string>
     <string name="email">Emailas</string>
+    <string name="google_map_api_key">AIzaSyDsqC4xKryVdY54iausGO21XUY-IZmS6Wk</string>
 </resources>

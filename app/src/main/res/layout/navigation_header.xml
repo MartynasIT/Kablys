@@ -27,7 +27,6 @@
         android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
-        app:fontFamily="serif"
         android:textSize="14sp"/>
 
     <TextView
@@ -39,7 +38,6 @@
         android:text=""
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@android:color/white"
-        app:fontFamily="serif"
         android:textSize="9sp"/>
 
 
