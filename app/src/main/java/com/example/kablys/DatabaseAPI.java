@@ -45,7 +45,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         String selectQuery = "SELECT  * FROM " + "Locations";
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Locations WHERE Username = ?", new String[] {username});
+        Cursor cursor = db.rawQuery("SELECT * FROM Locations WHERE User = ?", new String[] {username});
 
         // Looping through all rows and adding to list
         if (cursor.moveToFirst()) {

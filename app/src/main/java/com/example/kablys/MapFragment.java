@@ -64,8 +64,8 @@ public class MapFragment extends Fragment{
     private static final float DEFAULT_ZOOM = 15f;
     public String fish;
     boolean ok_pressed;
-    DatabaseAPI db;
     SessionManager sessionManager;
+    DatabaseAPI db;
     private  ArrayList<String[]> locations = new ArrayList<String[]>();
 
 
@@ -78,20 +78,19 @@ public class MapFragment extends Fragment{
         ctx=context;
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CheckMaps();
+        db = new DatabaseAPI(ctx);
+        sessionManager = new SessionManager(ctx);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-        sessionManager = new SessionManager(ctx);
-        //locations = db.getLocations("snapsas");
+        //db.getLocations("snapsas");
         //((AppCompatActivity)getActivity()).getSupportActionBar().hide();
        // Toolbar toolbarMaps = rootView.findViewById(R.id.toolmaps);
        // ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarMaps);
@@ -102,6 +101,9 @@ public class MapFragment extends Fragment{
             public void onMapReady(GoogleMap Map) {
                 mMap = Map;
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                locations = db.getLocations(sessionManager.get_username());
+                addMarkers();
+                //db.getLocations("snapsas");
                 if (ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED &&
                         ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
@@ -194,8 +196,7 @@ public class MapFragment extends Fragment{
         public  void addMarkers()
         {
             for (String[] array : locations){
-                System.out.println(array[3] + ":" + array[5]);
-                LatLng latLng = new LatLng(Double.parseDouble(array[0]), Double.parseDouble(array[1]));
+                LatLng latLng = new LatLng(Double.parseDouble(array[1]), Double.parseDouble(array[0]));
                 mMap.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title(array[2])

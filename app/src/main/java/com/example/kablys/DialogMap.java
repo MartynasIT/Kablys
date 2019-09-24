@@ -27,17 +27,10 @@ public class DialogMap extends DialogFragment {
     private TextView btn_ok, btn_cancel;
     private EditText edit_fish, edit_weight, edit_descr;
     public Button butt;
-    private  onDialogOk dialog;
     public LatLng latLng;
     DatabaseAPI db;
     SessionManager Session;
-    public interface onDialogOk{
 
-        void sendInput(String fish);
-        //void ok_pressed(Boolean pressed);
-
-
-    }
 
     @NonNull
     @Override
@@ -45,6 +38,8 @@ public class DialogMap extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_map_dialog, null);
+        db = new DatabaseAPI(getContext());
+        Session = new SessionManager(getContext());
         edit_fish = view.findViewById(R.id.map_fish);
         edit_weight = view.findViewById(R.id.map_weight);
         edit_descr = view.findViewById(R.id.map_description);
@@ -60,7 +55,6 @@ public class DialogMap extends DialogFragment {
                            db.addLocation(Session.get_username(),  String.valueOf(latLng.latitude),  String.valueOf(latLng.longitude),
                                    fish, weight, descr);
                        }
-                       //dialog.sendInput(fish);
 
                     }
                 });
@@ -68,11 +62,6 @@ public class DialogMap extends DialogFragment {
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        dialog = (onDialogOk)getTargetFragment();
 
-    }
 
 }
