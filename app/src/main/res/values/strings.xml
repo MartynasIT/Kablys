@@ -25,4 +25,10 @@
     <string name="toolbar_text">Orai</string>
     <string name="email">Emailas</string>
     <string name="google_map_api_key">AIzaSyDsqC4xKryVdY54iausGO21XUY-IZmS6Wk</string>
+    <string name="map_fish">Žuvis</string>
+    <string name="map_weight">Svoris</string>
+    <string name="map_description">Aprašymas</string>
+    <string name="text_cought_fish">Pažymėkite pagautą žuvį žemėlapyje</string>
+    <string name="maps_btn_ok">OK</string>
+    <string name="maps_cancel">Atšaukti</string>
 </resources>

@@ -34,7 +34,7 @@ public class EmailSender  {
             MimeMessage msg = new MimeMessage(session);
             InternetAddress[] address = InternetAddress.parse(email, true);
             msg.setRecipients(Message.RecipientType.TO, address);
-            msg.setSubject("You have registered");
+            msg.setSubject("Jūs užsiregistravote!");
             msg.setSentDate(new Date());
             msg.setText(body);
             Transport.send(msg);

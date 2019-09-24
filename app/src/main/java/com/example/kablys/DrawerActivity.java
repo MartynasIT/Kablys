@@ -48,10 +48,11 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
-            case R.id.nav_account:
-                Intent MapIntent = new Intent(DrawerActivity.this, MapActivity.class);
-                startActivity(MapIntent);
-                break;
+          //  case R.id.nav_account:
+               // getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                      //  new MapFragment()).commit();
+               // break;
+
             case R.id.nav_logout:
                 Session = new SessionManager(this);
                 Session.set_logged_in(false);

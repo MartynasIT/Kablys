@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/map_text"
+        android:text="@string/text_cought_fish"
+        android:textSize="18sp"
+        android:textColor="#000"/>
+
+
+    <EditText
+        android:paddingTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/map_fish"
+        android:layout_below="@+id/map_text"
+        android:hint="@string/map_fish"/>
+
+    <EditText
+        android:id="@+id/map_weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/map_fish"
+        android:hint="@string/map_weight"
+        android:paddingTop="14dp"/>
+
+    <EditText
+        android:id="@+id/map_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/map_weight"
+        android:hint="@string/map_description"
+        android:paddingTop="14dp" />
+
+
+
+</RelativeLayout>

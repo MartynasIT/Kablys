@@ -1,4 +1,5 @@
 package com.example.kablys;
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -6,17 +7,24 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -26,21 +34,25 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 
 import static android.content.ContentValues.TAG;
 
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment{
     boolean mLocationPermissionGranted = false;
     public static final int ERROR_DIALOG_REQUEST = 9001;
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
@@ -50,6 +62,12 @@ public class MapFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationClient;
     private  Location location;
     private static final float DEFAULT_ZOOM = 15f;
+    public String fish;
+    boolean ok_pressed;
+    DatabaseAPI db;
+    SessionManager sessionManager;
+    private  ArrayList<String[]> locations = new ArrayList<String[]>();
+
 
     public MapFragment() {
     }
@@ -61,31 +79,64 @@ public class MapFragment extends Fragment {
     }
 
 
-// ..
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        CheckMaps();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        final View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+        sessionManager = new SessionManager(ctx);
+        //locations = db.getLocations("snapsas");
+        //((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+       // Toolbar toolbarMaps = rootView.findViewById(R.id.toolmaps);
+       // ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarMaps);
+
+        final SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap Map) {
-                CheckMaps();
                 mMap = Map;
-                mMap.setMyLocationEnabled(true);
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                mMap.clear(); //clear old markers
-                getDeviceLocation();
+                if (ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED &&
+                        ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+                                PackageManager.PERMISSION_GRANTED) {
+                    mMap.setMyLocationEnabled(true);
+                    getDeviceLocation();
+                }
+                else {
+
+                    getLocationPermission();
+                }
+
+
+                mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+                    @Override
+                    public void onMapLongClick(LatLng latLng) {
+                        //FragmentManager fm = getActivity().getSupportFragmentManager();
+                        DialogMap dial = new DialogMap();
+                        dial.setTargetFragment(MapFragment.this, 1);
+                        dial.latLng = latLng;
+                        dial.show(getFragmentManager(), "Add a catch");
+
+                           /* mMap.addMarker(new MarkerOptions()
+                                    .position(latLng)
+                                    .title(fish)
+                                    .snippet("Your marker snippet")
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.fish_icon_map)));
+
+                            */
+
+
+                    }
+                });
             }
         });
-
 
         return rootView;
     }
@@ -121,51 +172,40 @@ public class MapFragment extends Fragment {
     }
 
     private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
-        if (ContextCompat.checkSelfPermission(ctx,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
-        } else {
+
             ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{
+                            android.Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    },
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        mLocationPermissionGranted = false;
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
-                }
+            // refreshinam tam kad atsinaujintu zemelapis po allow
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            getFragmentManager().beginTransaction().detach(this).commitNow();
+            getFragmentManager().beginTransaction().attach(this).commitNow();
+        } else {
+            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+        }
+        }
+
+
+        public  void addMarkers()
+        {
+            for (String[] array : locations){
+                System.out.println(array[3] + ":" + array[5]);
+                LatLng latLng = new LatLng(Double.parseDouble(array[0]), Double.parseDouble(array[1]));
+                mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(array[2])
+                        .snippet(array[3])
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.fish_icon_map)));
             }
         }
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult: called.");
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_ENABLE_GPS: {
-                if (!mLocationPermissionGranted) {
-                    getLocationPermission();
-                }
 
-            }
-        }
-    }
+
 
     public boolean CheckMaps()
     {
@@ -233,4 +273,5 @@ public class MapFragment extends Fragment {
         }
     }
 
-    }
+
+}

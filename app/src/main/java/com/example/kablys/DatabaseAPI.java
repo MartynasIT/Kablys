@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DatabaseAPI extends SQLiteOpenHelper {
     public static final String DatabaseName="kablys.db";
@@ -24,6 +27,8 @@ public class DatabaseAPI extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("Create Table Users (ID Integer PRIMARY KEY AUTOINCREMENT," +
                 " Username Text, Password Text, Email Text)");
+        sqLiteDatabase.execSQL("Create Table Locations (User Text PRIMARY KEY," +
+                "Longitude Text, Latitude Text, Fish Text, Weight Text, Description Text)");
 
     }
 
@@ -31,6 +36,45 @@ public class DatabaseAPI extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(" DROP TABLE IF EXISTS " + TableName);
         onCreate(sqLiteDatabase);
+
+    }
+    public ArrayList<String[]> getLocations(String username) {
+        ArrayList<String[]> locations = new ArrayList<String[]>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + "Locations";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Locations WHERE Username = ?", new String[] {username});
+
+        // Looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                String loni = cursor.getString(cursor.getColumnIndex("Longitude"));
+                String lati = cursor.getString(cursor.getColumnIndex("Latitude"));
+                String fish = cursor.getString(cursor.getColumnIndex("Fish"));
+                String weight = cursor.getString(cursor.getColumnIndex("Weight"));
+                String desription = cursor.getString(cursor.getColumnIndex("Description"));
+                locations.add( new String[]{loni,lati,fish,weight,desription});
+
+            } while (cursor.moveToNext());
+        }
+
+        // return student list
+        return locations;
+    }
+
+    public  void addLocation (String user, String lat, String longi, String fish, String weitht, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("User", user);
+        contentValues.put("Longitude", longi);
+        contentValues.put("Latitude", lat);
+        contentValues.put("Fish", fish);
+        contentValues.put("Weight", weitht);
+        contentValues.put("Description", description);
+        long result = db.insert("Locations", null, contentValues);
+        db.close();
 
     }
 
