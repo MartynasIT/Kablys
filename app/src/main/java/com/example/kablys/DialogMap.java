@@ -3,10 +3,14 @@ package com.example.kablys;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
@@ -31,13 +35,12 @@ public class DialogMap extends DialogFragment {
     DatabaseAPI db;
     SessionManager Session;
 
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_map_dialog, null);
+        final View view = inflater.inflate(R.layout.layout_map_dialog, null);
         db = new DatabaseAPI(getContext());
         Session = new SessionManager(getContext());
         edit_fish = view.findViewById(R.id.map_fish);
@@ -52,16 +55,27 @@ public class DialogMap extends DialogFragment {
                        String weight = edit_weight.getText().toString();
                        if (!fish.isEmpty())
                        {
-                           db.addLocation(Session.get_username(),  String.valueOf(latLng.latitude),  String.valueOf(latLng.longitude),
+                           long result = db.addLocation(Session.get_username(),  String.valueOf(latLng.latitude),  String.valueOf(latLng.longitude),
                                    fish, weight, descr);
+                           if (result <= 0)
+                               Toast.makeText(view.getContext(), "Klaida!",
+                                       Toast.LENGTH_SHORT).show();
+                           else
+                           {
+                              // Here I should refresh the MapFragment
+                           }
+
                        }
 
                     }
+
+
                 });
+
                 return builder.create();
 
-    }
 
+    }
 
 
 }

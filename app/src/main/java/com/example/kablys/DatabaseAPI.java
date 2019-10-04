@@ -27,7 +27,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("Create Table Users (ID Integer PRIMARY KEY AUTOINCREMENT," +
                 " Username Text, Password Text, Email Text)");
-        sqLiteDatabase.execSQL("Create Table Locations (User Text PRIMARY KEY," +
+        sqLiteDatabase.execSQL("Create Table Locations (ID Integer PRIMARY KEY AUTOINCREMENT, User Text," +
                 "Longitude Text, Latitude Text, Fish Text, Weight Text, Description Text)");
 
     }
@@ -61,10 +61,12 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         }
 
         // return student list
+        db.close();
+        cursor.close();
         return locations;
     }
 
-    public  void addLocation (String user, String lat, String longi, String fish, String weitht, String description) {
+    public  long addLocation (String user, String lat, String longi, String fish, String weitht, String description) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("User", user);
@@ -75,6 +77,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         contentValues.put("Description", description);
         long result = db.insert("Locations", null, contentValues);
         db.close();
+        return result;
 
     }
 

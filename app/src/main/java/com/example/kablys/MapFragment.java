@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,13 +47,16 @@ import android.support.v7.widget.Toolbar;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 import static android.content.ContentValues.TAG;
 
 
-public class MapFragment extends Fragment{
+public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickListener {
     boolean mLocationPermissionGranted = false;
     public static final int ERROR_DIALOG_REQUEST = 9001;
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
@@ -67,10 +71,12 @@ public class MapFragment extends Fragment{
     SessionManager sessionManager;
     DatabaseAPI db;
     private  ArrayList<String[]> locations = new ArrayList<String[]>();
+    private Marker myMarker;
 
 
     public MapFragment() {
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -85,6 +91,7 @@ public class MapFragment extends Fragment{
         db = new DatabaseAPI(ctx);
         sessionManager = new SessionManager(ctx);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -195,14 +202,20 @@ public class MapFragment extends Fragment{
 
         public  void addMarkers()
         {
-            for (String[] array : locations){
+            Iterator<String[]> itr = locations.iterator();
+            while (itr.hasNext()){
+                String[] array = itr.next(); // You were just missing saving the value for reuse
                 LatLng latLng = new LatLng(Double.parseDouble(array[1]), Double.parseDouble(array[0]));
-                mMap.addMarker(new MarkerOptions()
+                mMap.setOnMarkerClickListener(this);
+                myMarker = mMap.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title(array[2])
-                        .snippet(array[3])
+                        .snippet(array[4])
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.fish_icon_map)));
+
+
             }
+
         }
 
 
@@ -275,4 +288,27 @@ public class MapFragment extends Fragment{
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if (marker.equals(myMarker))
+        {
+            Iterator<String[]> itr = locations.iterator();
+            while (itr.hasNext()){
+                String[] array = itr.next(); // You were just missing saving the value for reuse
+                LatLng latLng = new LatLng(Double.parseDouble(array[1]), Double.parseDouble(array[0]));
+                if (latLng.equals(marker.getPosition()))
+                {
+                    DialogCatch dial = new DialogCatch();
+                    dial.setTargetFragment(MapFragment.this, 1);
+                    dial.fish = array[2];
+                    dial.descr = array[4];
+                    dial.weight = array[3];
+                    dial.show(getFragmentManager(), "Catch");
+                }
+
+
+            }
+        }
+        return false;
+    }
 }
