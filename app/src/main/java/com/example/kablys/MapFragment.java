@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -61,6 +63,7 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     public static final int ERROR_DIALOG_REQUEST = 9001;
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
     public static final int  PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
+    public static final int  PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 9004;
     private Context ctx;
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
@@ -70,12 +73,14 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     boolean ok_pressed;
     SessionManager sessionManager;
     DatabaseAPI db;
-    private  ArrayList<String[]> locations = new ArrayList<String[]>();
+    private  ArrayList<Object[]> locations = new ArrayList<Object[]>();
     private Marker myMarker;
 
 
     public MapFragment() {
     }
+
+
 
 
     @Override
@@ -180,6 +185,7 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
         return true;
     }
 
+
     private void getLocationPermission() {
 
             ActivityCompat.requestPermissions(getActivity(),
@@ -200,17 +206,18 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
         }
 
 
+
         public  void addMarkers()
         {
-            Iterator<String[]> itr = locations.iterator();
+            Iterator<Object[]> itr = locations.iterator();
             while (itr.hasNext()){
-                String[] array = itr.next(); // You were just missing saving the value for reuse
-                LatLng latLng = new LatLng(Double.parseDouble(array[1]), Double.parseDouble(array[0]));
+                Object[] array = itr.next(); // You were just missing saving the value for reuse
+                LatLng latLng = new LatLng(Double.parseDouble((String) array[1]), Double.parseDouble((String) array[0]));
                 mMap.setOnMarkerClickListener(this);
                 myMarker = mMap.addMarker(new MarkerOptions()
                         .position(latLng)
-                        .title(array[2])
-                        .snippet(array[4])
+                        .title(String.valueOf(array[2]))
+                        .snippet(String.valueOf(array[4]))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.fish_icon_map)));
 
 
@@ -292,17 +299,20 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     public boolean onMarkerClick(Marker marker) {
         if (marker.equals(myMarker))
         {
-            Iterator<String[]> itr = locations.iterator();
+            Iterator<Object[]> itr = locations.iterator();
             while (itr.hasNext()){
-                String[] array = itr.next(); // You were just missing saving the value for reuse
-                LatLng latLng = new LatLng(Double.parseDouble(array[1]), Double.parseDouble(array[0]));
+                Object[] array = itr.next(); // You were just missing saving the value for reuse
+                LatLng latLng = new LatLng(Double.parseDouble((String) array[1]), Double.parseDouble((String) array[0]));
                 if (latLng.equals(marker.getPosition()))
                 {
                     DialogCatch dial = new DialogCatch();
                     dial.setTargetFragment(MapFragment.this, 1);
-                    dial.fish = array[2];
-                    dial.descr = array[4];
-                    dial.weight = array[3];
+                    dial.fish = (String) array[2];
+                    dial.descr = (String) array[4];
+                    dial.weight = (String) array[3];
+                    if (array[5]!= null)
+                    dial.image = (byte[]) array[5];
+                    dial.markerID = (int) array[6];
                     dial.show(getFragmentManager(), "Catch");
                 }
 

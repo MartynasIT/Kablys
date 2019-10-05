@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:textAlignment="center"
         android:text="Pagauta Žuvis"
-        android:textSize="18sp"
+        android:textSize="22sp"
         android:textColor="#000"/>
 
     <TextView
@@ -75,6 +75,14 @@
         android:layout_below="@+id/cought_description"
         android:hint="@string/map_description"
         android:paddingTop="6dp" />
+
+    <ImageView
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_below="@+id/map_description"
+        android:rotation="90"
+        android:id="@+id/show_pic"/>
 
 
 

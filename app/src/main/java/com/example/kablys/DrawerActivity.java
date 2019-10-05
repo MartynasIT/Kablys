@@ -39,7 +39,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         View headerView = navView.getHeaderView(0);
         TextView user = headerView.findViewById(R.id.drawer_username);
         TextView email = headerView.findViewById(R.id.drawer_email);
-        user.setText(Session.get_username());
+        user.setText((String) Session.get_username());
         email.setText(Session.get_email());
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new MapFragment()).commit();

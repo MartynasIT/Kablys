@@ -33,7 +33,7 @@ public class SessionManager {
         return preferences.getBoolean("State", false);
     }
 
-    public String get_username() {
+    public Object get_username() {
         return preferences.getString("Username", null);
     }
 

@@ -31,4 +31,5 @@
     <string name="text_cought_fish">Pažymėkite pagautą žuvį žemėlapyje</string>
     <string name="maps_btn_ok">OK</string>
     <string name="maps_cancel">Atšaukti</string>
+    <string name="upload_pic">Įkelti nuotrauka</string>
 </resources>

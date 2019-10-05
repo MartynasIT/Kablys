@@ -28,7 +28,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("Create Table Users (ID Integer PRIMARY KEY AUTOINCREMENT," +
                 " Username Text, Password Text, Email Text)");
         sqLiteDatabase.execSQL("Create Table Locations (ID Integer PRIMARY KEY AUTOINCREMENT, User Text," +
-                "Longitude Text, Latitude Text, Fish Text, Weight Text, Description Text)");
+                "Longitude Text, Latitude Text, Fish Text, Weight Text, Description Text, Image Blob)");
 
     }
 
@@ -38,24 +38,27 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
 
     }
-    public ArrayList<String[]> getLocations(String username) {
-        ArrayList<String[]> locations = new ArrayList<String[]>();
+    public ArrayList<Object[]> getLocations(Object username) {
+        ArrayList<Object[]> locations = new ArrayList<Object[]>();
+        ArrayList<byte[]> images = new ArrayList<byte[]>();
 
         // Select All Query
         String selectQuery = "SELECT  * FROM " + "Locations";
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM Locations WHERE User = ?", new String[] {username});
+        Cursor cursor = db.rawQuery("SELECT * FROM Locations WHERE User = ?", new String[] {String.valueOf(username)});
 
         // Looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
+                int id = cursor.getInt(cursor.getColumnIndex("ID"));
                 String loni = cursor.getString(cursor.getColumnIndex("Longitude"));
                 String lati = cursor.getString(cursor.getColumnIndex("Latitude"));
                 String fish = cursor.getString(cursor.getColumnIndex("Fish"));
                 String weight = cursor.getString(cursor.getColumnIndex("Weight"));
                 String desription = cursor.getString(cursor.getColumnIndex("Description"));
-                locations.add( new String[]{loni,lati,fish,weight,desription});
+                byte [] imgae = cursor.getBlob(cursor.getColumnIndex("Image"));
+                locations.add( new Object[]{loni,lati,fish,weight,desription, imgae, id});
 
             } while (cursor.moveToNext());
         }
@@ -66,15 +69,23 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         return locations;
     }
 
-    public  long addLocation (String user, String lat, String longi, String fish, String weitht, String description) {
+    public void removeLocation (String username, int id){
+        SQLiteDatabase db  = getReadableDatabase();
+        db.delete("Locations", "ID=? and User=?", new String[]{Integer.toString(id), username});
+        db.close();
+
+    }
+
+    public  long addLocation (Object user, String lat, String longi, String fish, String weitht, String description, byte[] image) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("User", user);
+        contentValues.put("User", (String) user);
         contentValues.put("Longitude", longi);
         contentValues.put("Latitude", lat);
         contentValues.put("Fish", fish);
         contentValues.put("Weight", weitht);
         contentValues.put("Description", description);
+        contentValues.put("Image", image);
         long result = db.insert("Locations", null, contentValues);
         db.close();
         return result;
