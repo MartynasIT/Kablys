@@ -74,7 +74,6 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     SessionManager sessionManager;
     DatabaseAPI db;
     private  ArrayList<Object[]> locations = new ArrayList<Object[]>();
-    private Marker myMarker;
 
 
     public MapFragment() {
@@ -132,21 +131,18 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
                 mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
                     @Override
                     public void onMapLongClick(LatLng latLng) {
-                        //FragmentManager fm = getActivity().getSupportFragmentManager();
                         DialogMap dial = new DialogMap();
                         dial.setTargetFragment(MapFragment.this, 1);
                         dial.latLng = latLng;
+                        FragmentManager fm = getFragmentManager();
                         dial.show(getFragmentManager(), "Add a catch");
-
-                           /* mMap.addMarker(new MarkerOptions()
-                                    .position(latLng)
-                                    .title(fish)
-                                    .snippet("Your marker snippet")
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.fish_icon_map)));
-
-                            */
-
-
+                        fm.executePendingTransactions();
+                        dial.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialogInterface) {
+                             refresh();
+                            }
+                        });
                     }
                 });
             }
@@ -196,16 +192,8 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
             // refreshinam tam kad atsinaujintu zemelapis po allow
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            getFragmentManager().beginTransaction().detach(this).commitNow();
-            getFragmentManager().beginTransaction().attach(this).commitNow();
-        } else {
-            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+            refresh();
         }
-        }
-
-
 
         public  void addMarkers()
         {
@@ -214,19 +202,15 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
                 Object[] array = itr.next(); // You were just missing saving the value for reuse
                 LatLng latLng = new LatLng(Double.parseDouble((String) array[1]), Double.parseDouble((String) array[0]));
                 mMap.setOnMarkerClickListener(this);
-                myMarker = mMap.addMarker(new MarkerOptions()
+                         mMap.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title(String.valueOf(array[2]))
                         .snippet(String.valueOf(array[4]))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.fish_icon_map)));
 
-
             }
 
         }
-
-
-
 
     public boolean CheckMaps()
     {
@@ -297,11 +281,10 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if (marker.equals(myMarker))
-        {
+
             Iterator<Object[]> itr = locations.iterator();
             while (itr.hasNext()){
-                Object[] array = itr.next(); // You were just missing saving the value for reuse
+                Object[] array = itr.next();
                 LatLng latLng = new LatLng(Double.parseDouble((String) array[1]), Double.parseDouble((String) array[0]));
                 if (latLng.equals(marker.getPosition()))
                 {
@@ -311,14 +294,23 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
                     dial.descr = (String) array[4];
                     dial.weight = (String) array[3];
                     if (array[5]!= null)
-                    dial.image = (byte[]) array[5];
+                    {dial.image = (byte[]) array[5];}
                     dial.markerID = (int) array[6];
                     dial.show(getFragmentManager(), "Catch");
                 }
 
-
-            }
         }
         return false;
     }
+
+    public void refresh()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            getFragmentManager().beginTransaction().detach(this).commitNow();
+            getFragmentManager().beginTransaction().attach(this).commitNow();
+        } else {
+            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+        }
+    }
+
 }

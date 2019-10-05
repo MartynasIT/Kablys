@@ -53,6 +53,7 @@ public class DialogMap extends DialogFragment {
     private Bitmap bitmap;
     private  byte[] image;
 
+
     private void getFilePerms()
     {
         ActivityCompat.requestPermissions(getActivity(),
@@ -101,7 +102,7 @@ public class DialogMap extends DialogFragment {
                                        Toast.LENGTH_SHORT).show();
                            else
                            {
-                              // Here I should refresh the MapFragment
+
                            }
                        }
                     }
@@ -129,11 +130,7 @@ public class DialogMap extends DialogFragment {
 
         });
 
-
-
                 return builder.create();
-
-
     }
 
     @Override
@@ -161,4 +158,5 @@ public class DialogMap extends DialogFragment {
 
             }
     }
+
 }

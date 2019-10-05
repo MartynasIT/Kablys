@@ -78,11 +78,12 @@ public class DialogCatch extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 new AlertDialog.Builder(ctx)
-                        .setTitle("Dėmesio")
+                        .setTitle("Dėmesio!")
                         .setMessage("Pašalinti pagautą žuvį?")
                         .setPositiveButton("Taip", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         db.removeLocation((String) Session.get_username(), markerID);
+                        MapFragment map = new MapFragment();
                     }
                 })
                         .setNegativeButton("Ne", new DialogInterface.OnClickListener() {
