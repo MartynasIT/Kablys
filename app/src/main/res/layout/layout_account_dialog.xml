@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:padding="15dp">
+
+    <TextView
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/map_text"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:text="Pakeisti slaptažodį"
+        android:textSize="22sp"
+        android:textColor="#000"/>
+
+    <EditText
+        android:paddingTop="26dp"
+        android:layout_width="220dp"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:id="@+id/old_passwd"
+        android:layout_centerHorizontal="true"
+        android:hint="Senas slaptažodis"
+        android:textAlignment="center"
+        android:layout_below="@+id/map_text"/>
+
+    <EditText
+        android:paddingTop="26dp"
+        android:layout_width="220dp"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_passwd"
+        android:layout_centerHorizontal="true"
+        android:hint="Naujas slaptažodis"
+        android:textAlignment="center"
+        android:layout_below="@+id/old_passwd"/>
+
+    <EditText
+        android:paddingTop="26dp"
+        android:layout_width="220dp"
+        android:inputType="textPassword"
+        android:singleLine="true"
+        android:layout_height="wrap_content"
+        android:id="@+id/comf_passwd"
+        android:layout_centerHorizontal="true"
+        android:hint="Pakartoti"
+        android:textAlignment="center"
+        android:layout_below="@+id/new_passwd"/>
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/comf_passwd"
+        android:layout_centerHorizontal="true"
+        android:text="Pakeisti"/>
+
+
+</RelativeLayout>

@@ -36,6 +36,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -81,11 +82,17 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
 
 
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         ctx=context;
+    }
+
+    public static BitmapDescriptor getImage(byte[] image) {
+        Bitmap map =  BitmapFactory.decodeByteArray(image, 0, image.length);
+        Bitmap smallMarker = Bitmap.createScaledBitmap(map, 76, 76, false);
+        BitmapDescriptor smallMarkerIcon = BitmapDescriptorFactory.fromBitmap(smallMarker);
+        return  smallMarkerIcon;
     }
 
     @Override
@@ -202,12 +209,18 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
                 Object[] array = itr.next(); // You were just missing saving the value for reuse
                 LatLng latLng = new LatLng(Double.parseDouble((String) array[1]), Double.parseDouble((String) array[0]));
                 mMap.setOnMarkerClickListener(this);
+                if (array[5] != null)
                          mMap.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title(String.valueOf(array[2]))
                         .snippet(String.valueOf(array[4]))
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.fish_icon_map)));
-
+                        .icon(getImage((byte[]) array[5])));
+                else
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(String.valueOf(array[2]))
+                            .snippet(String.valueOf(array[4]))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.fish_icon_map)));
             }
 
         }

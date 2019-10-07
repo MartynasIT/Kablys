@@ -75,6 +75,39 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         db.close();
 
     }
+    public boolean comfirmPassword (String passwd, String username){
+        String oldPasswd = "";
+        SQLiteDatabase db  = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT Password FROM Users WHERE Username = ?", new String[] {username});
+        while (cursor.moveToNext())
+        {
+            oldPasswd = cursor.getString(0);
+        }
+        cursor.close();
+        db.close();
+        if (oldPasswd == passwd )
+
+        return  true;
+        else
+            return false;
+
+    }
+
+    public long ChangePassword (String passwd, String username){
+        SQLiteDatabase db  = getReadableDatabase();
+        db.update("Users", "Username=?", new String[]{username});
+        db.close();
+
+    }
+
+
+    public void removeAccount (String username){
+        SQLiteDatabase db  = getReadableDatabase();
+        db.delete("Locations", "User=?", new String[]{username});
+        db.delete("Users", "Username=?", new String[]{username});
+        db.close();
+
+    }
 
     public  long addLocation (Object user, String lat, String longi, String fish, String weitht, String description, byte[] image) {
         SQLiteDatabase db = this.getWritableDatabase();

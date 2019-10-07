@@ -97,14 +97,17 @@ public class DialogMap extends DialogFragment {
                        {
                            long result = db.addLocation(Session.get_username(),  String.valueOf(latLng.latitude),  String.valueOf(latLng.longitude),
                                    fish, weight, descr, image);
+
                            if (result <= 0)
                                Toast.makeText(view.getContext(), "Klaida!",
                                        Toast.LENGTH_SHORT).show();
                            else
                            {
-
+                               dialogInterface.dismiss();
                            }
                        }
+                       else  Toast.makeText(view.getContext(), "Įveskite tekstą!",
+                               Toast.LENGTH_SHORT).show();
                     }
 
                 });
@@ -112,7 +115,7 @@ public class DialogMap extends DialogFragment {
                 builder.setNegativeButton("Atšaukti", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
+                        dialogInterface.cancel();
                     }
 
                 });

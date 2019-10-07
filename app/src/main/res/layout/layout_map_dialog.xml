@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/map_fish"
         android:layout_below="@+id/map_text"
+        android:nextFocusForward="@+id/map_weight"
         android:hint="@string/map_fish"/>
 
     <EditText
@@ -26,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/map_fish"
+        android:nextFocusForward="@+id/map_description"
         android:hint="@string/map_weight"
         android:paddingTop="14dp"/>
 
