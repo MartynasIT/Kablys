@@ -4,23 +4,31 @@
     tools:showIn="navigation_view">
 
    <group android:checkableBehavior="single">
-       <item android:id="@+id/nav_weather"
+       <item android:id="@+id/nav_maps"
            android:icon="@drawable/ic_sun"
+           android:title="@string/nav_maps"/>
+
+       <item android:id="@+id/nav_weather"
+           android:icon="@drawable/ic_account"
            android:title="@string/menu_weather"/>
 
-       <item android:id="@+id/nav_account"
+       <item android:id="@+id/nav_permit"
            android:icon="@drawable/ic_account"
-           android:title="@string/menu_account"/>
+           android:title="@string/nav_permit"/>
+
+       <item android:title="@string/nav_account"
+           android:id="@+id/nav_account"/>
 
        <item android:title="@string/menu_logout"
              android:id="@+id/nav_logout"/>
+
    </group>
 
     <item android:title="@string/menu_communication">
         <menu>
-            <item android:id="@+id/menu_fb"
+            <item android:id="@+id/share"
                 android:icon="@drawable/ic_face"
-                android:title="@string/menu_facebook"/>
+                android:title="@string/share_catch"/>
         </menu>
     </item>
 

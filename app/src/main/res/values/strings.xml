@@ -32,4 +32,8 @@
     <string name="maps_btn_ok">OK</string>
     <string name="maps_cancel">Atšaukti</string>
     <string name="upload_pic">Įkelti nuotrauka</string>
+    <string name="nav_maps">Žemėlapis</string>
+    <string name="share_catch">Pasidalinti pagavimu</string>
+    <string name="nav_account">Paskyra</string>
+    <string name="nav_permit">Leidimas</string>
 </resources>

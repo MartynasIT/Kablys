@@ -121,7 +121,6 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 locations = db.getLocations(sessionManager.get_username());
                 addMarkers();
-                //db.getLocations("snapsas");
                 if (ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED &&
                         ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==

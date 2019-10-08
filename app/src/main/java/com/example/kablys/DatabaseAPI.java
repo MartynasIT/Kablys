@@ -3,6 +3,7 @@ package com.example.kablys;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.Nullable;
@@ -85,7 +86,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-        if (oldPasswd == passwd )
+        if (oldPasswd.equals(passwd))
 
         return  true;
         else
@@ -93,11 +94,19 @@ public class DatabaseAPI extends SQLiteOpenHelper {
 
     }
 
-    public long ChangePassword (String passwd, String username){
+    public boolean  ChangePassword (String passwd, String username){
         SQLiteDatabase db  = getReadableDatabase();
-        db.update("Users", "Username=?", new String[]{username});
+        ContentValues cv = new ContentValues();
+        boolean result = true;
+        cv.put("Password",passwd); //These Fields should be your String values of actual column names
+        try {
+            db.update(TableName, cv, "Username=?", new String[] {username});
+        } catch (SQLException e) {
+            result = false;
+        }
+        cv.clear();
         db.close();
-
+        return result;
     }
 
 

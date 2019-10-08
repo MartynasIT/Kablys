@@ -71,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String email = TextEmail.getText().toString().trim();
                 Boolean is_email = android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy); // kad leistu is vieno threado siusti mail
+                StrictMode.setThreadPolicy(policy); // kad leistu is vienu threado siusti mail
 
                 int k = 0;
 

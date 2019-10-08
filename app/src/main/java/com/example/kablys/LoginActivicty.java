@@ -67,8 +67,6 @@ public class LoginActivicty extends AppCompatActivity {
                    Session.set_logged_in(true);
                    Session.set_username(user);
                    Session.set_email(res);
-                   Toast.makeText(LoginActivicty.this, "Prisijungta!",
-                           Toast.LENGTH_SHORT).show();
                    Intent SuccessIntent = new Intent(LoginActivicty.this, DrawerActivity.class);
                    startActivity(SuccessIntent);
                    finish();

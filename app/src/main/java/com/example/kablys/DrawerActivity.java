@@ -29,7 +29,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.open_navigation, R.string.close_navigation);
-        getSupportActionBar().setTitle("Orai");
+        getSupportActionBar().setTitle("Žemėlapis");
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -51,6 +51,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
            case R.id.nav_account:
                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                        new AccountFragment()).commit();
+               getSupportActionBar().setTitle("Paskyra");
                 break;
 
             case R.id.nav_logout:
@@ -61,9 +62,22 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                 finish();
                 break;
 
-            case R.id.nav_weather:
+            case R.id.nav_maps:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MapFragment()).commit();
+                break;
+
+            case  R.id.share:
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("image/jpeg/text");
+                share.putExtra(Intent.EXTRA_TEXT, "");
+                startActivity(Intent.createChooser(share, "share"));
+                break;
+
+            case  R.id.nav_permit:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new PermitFragment()).commit();
+                getSupportActionBar().setTitle("Leidimai");
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -81,6 +95,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             super.onBackPressed();
         }
     }
+
 
 
 }
