@@ -29,7 +29,7 @@
                 android:id="@+id/add_permit"
                 android:textSize="30sp"
                 android:text="+"
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:layout_marginRight="13dp"
                 android:background="@null"
                 android:layout_gravity="right"/>

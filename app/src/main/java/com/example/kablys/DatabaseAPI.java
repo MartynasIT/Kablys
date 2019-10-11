@@ -31,6 +31,9 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("Create Table Locations (ID Integer PRIMARY KEY AUTOINCREMENT, User Text," +
                 "Longitude Text, Latitude Text, Fish Text, Weight Text, Description Text, Image Blob)");
 
+        sqLiteDatabase.execSQL("Create Table Permits (ID Integer PRIMARY KEY AUTOINCREMENT, User Text," +
+                "StartTime Text, EndTIme Text, Notes Text)");
+
     }
 
     @Override
@@ -39,6 +42,31 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
 
     }
+
+    public ArrayList<String[]> getPermits(Object username) {
+        ArrayList<String[]> permits = new ArrayList<String[]>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Permits WHERE User = ?", new String[] {String.valueOf(username)});
+
+        // Looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                String start = cursor.getString(cursor.getColumnIndex("StartTime"));
+                String end = cursor.getString(cursor.getColumnIndex("EndTime"));
+                String notes = cursor.getString(cursor.getColumnIndex("Notes"));
+
+                permits.add( new String[]{start, end, notes});
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+        return permits;
+    }
+
+
     public ArrayList<Object[]> getLocations(Object username) {
         ArrayList<Object[]> locations = new ArrayList<Object[]>();
         ArrayList<byte[]> images = new ArrayList<byte[]>();
@@ -69,6 +97,18 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         cursor.close();
         return locations;
     }
+
+    public void  addPermit (Object user, String start_Date, String end_Date, String notes){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("User", (String) user);
+        contentValues.put("StartTime", start_Date);
+        contentValues.put("EndTime", end_Date);
+        contentValues.put("Notes", notes);
+        db.insert("Permits", null, contentValues);
+        db.close();
+    }
+
 
     public void removeLocation (String username, int id){
         SQLiteDatabase db  = getReadableDatabase();

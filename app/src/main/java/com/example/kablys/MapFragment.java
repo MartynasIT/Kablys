@@ -101,6 +101,9 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
         CheckMaps();
         db = new DatabaseAPI(ctx);
         sessionManager = new SessionManager(ctx);
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+       Button add =  toolbar.findViewById(R.id.add_permit);
+        add.setVisibility(View.GONE);
     }
 
     @Override

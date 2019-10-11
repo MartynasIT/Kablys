@@ -36,4 +36,46 @@
     <string name="share_catch">Pasidalinti pagavimu</string>
     <string name="nav_account">Paskyra</string>
     <string name="nav_permit">Leidimas</string>
+    <string name="permit_notes">Pastabos</string>
+    <string name="exipre_date">Galiojimo pabaiga</string>
+    <string name="btn_permit">Gerai</string>
+    <string name="permit_start_date">Galiojimo pradžia</string>
+    <string name="permit_spinner_dur">Trukmė:</string>
+
+    <string-array name="time_array">
+        <item>"Pasirinkite laiką"</item>
+        <item>00:00</item>
+        <item>01:00</item>
+        <item>02:00</item>
+        <item>03:00</item>
+        <item>04:00</item>
+        <item>05:00</item>
+        <item>06:00</item>
+        <item>07:00</item>
+        <item>08:00</item>
+        <item>09:00</item>
+        <item>10:00</item>
+        <item>11:00</item>
+        <item>12:00</item>
+        <item>13:00</item>
+        <item>14:00</item>
+        <item>15:00</item>
+        <item>16:00</item>
+        <item>17:00</item>
+        <item>18:00</item>
+        <item>19:00</item>
+        <item>20:00</item>
+        <item>21:00</item>
+        <item>22:00</item>
+        <item>23:00</item>
+    </string-array>
+
+    <string-array name="duration_array">
+        <item>"Pasirinkite trukmę"</item>
+        <item>"Dvi dienos"</item>
+        <item>"Mėnuo"</item>
+        <item>"Metai"</item>
+
+    </string-array>
+
 </resources>

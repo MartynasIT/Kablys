@@ -57,6 +57,15 @@ public class PermitFragment extends Fragment {
         add =  toolbar.findViewById(R.id.add_permit);
         add.setVisibility(View.VISIBLE);
 
+        add.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                DialogPermit dialog = new DialogPermit();
+                dialog.show(getFragmentManager(), "Add permit");
+            }
+        });
+
     }
 
 
