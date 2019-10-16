@@ -32,7 +32,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
                 "Longitude Text, Latitude Text, Fish Text, Weight Text, Description Text, Image Blob)");
 
         sqLiteDatabase.execSQL("Create Table Permits (ID Integer PRIMARY KEY AUTOINCREMENT, User Text," +
-                "StartTime Text, EndTIme Text, Notes Text)");
+                "StartTime Text, EndTIme Text, Notes Text, Notified Text)");
 
     }
 
@@ -40,6 +40,19 @@ public class DatabaseAPI extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(" DROP TABLE IF EXISTS " + TableName);
         onCreate(sqLiteDatabase);
+
+    }
+
+    public void  UpdatePermit (Object username, String endTime){
+        SQLiteDatabase db  = getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("Notified","1");
+        try {
+            db.update("Permits", cv, "User=? and EndTIme=?", new String[] {(String) username, endTime});
+        } catch (SQLException e) {
+        }
+        cv.clear();
+        db.close();
 
     }
 
@@ -53,10 +66,11 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 String start = cursor.getString(cursor.getColumnIndex("StartTime"));
-                String end = cursor.getString(cursor.getColumnIndex("EndTime"));
+                String end = cursor.getString(cursor.getColumnIndex("EndTIme"));
                 String notes = cursor.getString(cursor.getColumnIndex("Notes"));
+                String notified = cursor.getString(cursor.getColumnIndex("Notified"));
 
-                permits.add( new String[]{start, end, notes});
+                permits.add( new String[]{start, end, notes, notified});
 
             } while (cursor.moveToNext());
         }
@@ -64,6 +78,13 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         db.close();
         cursor.close();
         return permits;
+    }
+
+    public  void removePermits(String endTime, Object username)
+    {
+        SQLiteDatabase db  = getReadableDatabase();
+        db.delete("Permits", "EndTime=? and User=?", new String[]{endTime, (String) username});
+        db.close();
     }
 
 
@@ -105,6 +126,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         contentValues.put("StartTime", start_Date);
         contentValues.put("EndTime", end_Date);
         contentValues.put("Notes", notes);
+        contentValues.put("Notified", "0");
         db.insert("Permits", null, contentValues);
         db.close();
     }

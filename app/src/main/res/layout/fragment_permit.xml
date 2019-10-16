@@ -19,12 +19,12 @@
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/deleteACC"
+        android:id="@+id/allPermits"
         android:scrollbars = "vertical"
         android:text=""
-        android:textAlignment="center"
+        android:paddingLeft="5dp"
         android:layout_below="@+id/map_text"
-        android:textSize="20sp"
+        android:textSize="14sp"
         android:textColor="#000"/>
 
 

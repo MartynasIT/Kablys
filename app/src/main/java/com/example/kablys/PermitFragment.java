@@ -14,14 +14,21 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
 
 public class PermitFragment extends Fragment {
-    TextView deletACC;
+    TextView allPermits;
     TextView changePswd;
     Button add;
     Context ctx;
     DatabaseAPI db;
     SessionManager Session;
+    private ArrayList<String[]> permits = new ArrayList<String[]>();
+
 
     public PermitFragment() {
     }
@@ -51,11 +58,25 @@ public class PermitFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        deletACC = view.findViewById(R.id.deleteACC);
+        allPermits = view.findViewById(R.id.allPermits);
         changePswd = view.findViewById(R.id.changePasswd);
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         add =  toolbar.findViewById(R.id.add_permit);
         add.setVisibility(View.VISIBLE);
+        permits = db.getPermits(Session.get_username());
+        if (!permits.isEmpty())
+        {
+            Iterator<String[]> itr = permits.iterator();
+            while (itr.hasNext()){
+                String[] array = itr.next();
+                String permit = "Pradžia: " + array[0] + " Pabaiga: " +
+                        array[1] + " Pastabos: " + array[2] + "\n" + "\n";
+
+                allPermits.append(permit);
+
+            }
+
+        }
 
         add.setOnClickListener(new View.OnClickListener()
         {

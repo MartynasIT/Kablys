@@ -34,6 +34,8 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        startService(new Intent(this, BackgroundService.class));
+
         NavigationView navView = findViewById(R.id.navigation_view);
         navView.setNavigationItemSelectedListener(this);
         View headerView = navView.getHeaderView(0);

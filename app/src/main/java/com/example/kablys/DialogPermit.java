@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -52,8 +53,6 @@ public class DialogPermit extends DialogFragment {
 
     public DialogPermit() {
     }
-
-
 
 
     @Override
@@ -128,7 +127,7 @@ public class DialogPermit extends DialogFragment {
 
                  if (String.valueOf(duration.getSelectedItem()).equals("Dvi dienos"))
                  {
-                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
+                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy HH:mm", Locale.UK);
                      Calendar c = Calendar.getInstance();
                      try {
                          c.setTime(sdf.parse(startTime));
@@ -136,62 +135,44 @@ public class DialogPermit extends DialogFragment {
                          e.printStackTrace();
                      }
                      c.add(Calendar.DATE, 2);
-                     sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
+                     sdf = new SimpleDateFormat("dd/MM/yyy HH:mm", Locale.UK);
                      Date resultdate = new Date(c.getTimeInMillis());
                      EndTime = sdf.format(resultdate);
-                     Toast.makeText(getContext(), EndTime,
-                             Toast.LENGTH_SHORT).show();
+                     putPermit();
                  }
+
 
                  else if (String.valueOf(duration.getSelectedItem()).equals("Mėnuo"))
                  {
-                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
+                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm", Locale.UK);
                      Calendar c = Calendar.getInstance();
                      try {
-                         c.setTime(sdf.parse(EndTime));
+                         c.setTime(sdf.parse(startTime));
                      } catch (ParseException e) {
                          e.printStackTrace();
                      }
                      c.add(Calendar.DATE, 30);
-                     sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
+                     sdf = new SimpleDateFormat("dd/MM/yyy hh:mm", Locale.UK);
                      Date resultdate = new Date(c.getTimeInMillis());
                      EndTime = sdf.format(resultdate);
-                     Toast.makeText(getContext(), EndTime,
-                             Toast.LENGTH_SHORT).show();
-                 }
-
-                 else if (String.valueOf(duration.getSelectedItem()).equals("Mėnuo"))
-                 {
-                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
-                     Calendar c = Calendar.getInstance();
-                     try {
-                         c.setTime(sdf.parse(EndTime));
-                     } catch (ParseException e) {
-                         e.printStackTrace();
-                     }
-                     c.add(Calendar.DATE, 30);
-                     sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
-                     Date resultdate = new Date(c.getTimeInMillis());
-                     EndTime = sdf.format(resultdate);
-                     Toast.makeText(getContext(), EndTime,
-                             Toast.LENGTH_SHORT).show();
+                     putPermit();
                  }
 
                  else if (String.valueOf(duration.getSelectedItem()).equals("Metai"))
                  {
-                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
+                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm", Locale.UK);
                      Calendar c = Calendar.getInstance();
                      try {
-                         c.setTime(sdf.parse(EndTime));
+                         c.setTime(sdf.parse(startTime));
                      } catch (ParseException e) {
                          e.printStackTrace();
                      }
                      c.add(Calendar.DATE, 365);
-                     sdf = new SimpleDateFormat("dd/MM/yyy hh:mm");
+                     sdf = new SimpleDateFormat("dd/MM/yyy hh:mm", Locale.UK);
                      Date resultdate = new Date(c.getTimeInMillis());
                      EndTime = sdf.format(resultdate);
-                     Toast.makeText(getContext(), EndTime,
-                             Toast.LENGTH_SHORT).show();
+                     putPermit();
+
                  }
 
 
@@ -212,9 +193,11 @@ public class DialogPermit extends DialogFragment {
     {
         String notes = "";
         notes = description.getText().toString();
+        db.addPermit(Session.get_username(), startTime, EndTime, notes);
+        Toast.makeText(getContext(), "Idėta!",
+                Toast.LENGTH_SHORT).show();
 
-        db.addPermit(Session.get_username(), startTime, EndTime, notes );
-
+        dismiss();
     }
 
 
