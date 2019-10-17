@@ -1,20 +1,28 @@
 package com.example.kablys;
+
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.Service;
 import android.content.*;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.*;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -24,10 +32,10 @@ public class BackgroundService extends Service {
     DatabaseAPI db;
     SessionManager Session;
     private ArrayList<String[]> permits = new ArrayList<String[]>();
+    private ArrayList<String[]> ForbiddenLocations = new ArrayList<String[]>();
     public Context context = this;
     public Handler handler = null;
     public static Runnable runnable = null;
-
     private String CHANNEL_ID = "kablys";
 
     private void createNotificationChannel() {
@@ -65,19 +73,19 @@ public class BackgroundService extends Service {
     public void onCreate() {
         createNotificationChannel();
         db = new DatabaseAPI(this);
+        ForbiddenLocations = db.getForbiddenLocations();
         Session = new SessionManager(this);
-        Toast.makeText(this, "Service created!", Toast.LENGTH_LONG).show();
-
         handler = new Handler();
         runnable = new Runnable() {
             public void run() {
-              // Toast.makeText(context, "Service is still running", Toast.LENGTH_LONG).show();
                 try {
                     checkPermits();
                     permits.clear();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
+                checkDistance(); // tikriname ar zvejys nera arti vietos kur uzdrausta zvejoti
 
                 handler.postDelayed(runnable, 5000); // kas kiek laiko kartos run funkcija
             }
@@ -87,41 +95,96 @@ public class BackgroundService extends Service {
     }
 
     @Override
-    public void onDestroy() {
-        /* IF YOU WANT THIS SERVICE KILLED WITH THE APP THEN UNCOMMENT THE FOLLOWING LINE */
-        //handler.removeCallbacks(runnable);
-        Toast.makeText(this, "Service stopped", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent("com.android.BackgroundService");
-        sendBroadcast(intent);
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY; // turetu padeti neuzdaryti proceso
     }
 
-    private  void checkPermits() throws ParseException {
+    @Override
+    public void onDestroy() {
+       // Intent broadcastIntent = new Intent();
+       // broadcastIntent.setAction("restartservice");
+      //  broadcastIntent.setClass(this, Restarter.class);
+       // this.sendBroadcast(broadcastIntent);
+    }
+
+    private void checkPermits() throws ParseException {
         permits = db.getPermits(Session.get_username());
-        Calendar c1 =Calendar.getInstance();
-        Calendar c2 =Calendar.getInstance();
-        c1.add(Calendar.DATE,1); // priminimas 1d pries
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        c1.add(Calendar.DATE, 1); // priminimas 1d pries
 
         Iterator<String[]> itr = permits.iterator();
         while (itr.hasNext()) {
             String[] array = itr.next();
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyy HH:mm", Locale.UK);
             Date date = dateFormat.parse(array[1]);
-            if((c1.getTime().compareTo(date) > 0) && array[3].equals("0") && !date.before(c2.getTime())){
+            if ((c1.getTime().compareTo(date) > 0) && array[3].equals("0") && !date.before(c2.getTime())) {
 
-               db.UpdatePermit(Session.get_username(), array[1]);
-               createNotification("Už vienos dienos pasibaigs leidimas kuris galioja iki: " + array[1]);
+                db.UpdatePermit(Session.get_username(), array[1]);
+                createNotification("Už vienos dienos pasibaigs leidimas kuris galioja iki: " + array[1]);
 
             }
-           if (date.before(c2.getTime()))
-            {
+            if (date.before(c2.getTime())) {
 
                 db.removePermits(array[1], Session.get_username());
-                Toast.makeText(context, c2.getTime().toString() + " VS " + date , Toast.LENGTH_LONG).show();
+                Toast.makeText(context, c2.getTime().toString() + " VS " + date, Toast.LENGTH_LONG).show();
 
             }
 
 
         }
     }
+
+    private void checkDistance() {
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        else {
+            assert lm != null;
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+            Location loc1 = new Location("");
+            loc1.setLatitude(latitude);
+            loc1.setLongitude(longitude);
+
+            Iterator<String[]> itr = ForbiddenLocations.iterator();
+            while (itr.hasNext()) {
+                String[] array = itr.next();
+
+                Location loc2 = new Location("");
+                loc2.setLatitude(Double.parseDouble(array[0]));
+                loc2.setLongitude(Double.parseDouble(array[1]));
+
+                float distance = loc1.distanceTo(loc2) / 1000;
+                Toast.makeText(this, Float.toString(distance),
+                        Toast.LENGTH_SHORT).show();
+                if (distance < 5.0) //mazesnis nei 5km atstumas
+                {
+                   WarnUser("Artėjate (atstumas mažesnis nei 5km) prie vietos kurioje yra uždrausta žvejoti. Vietos pavadinimas: " + array[2]);
+
+                }
+
+            }
+        }
+    }
+
+
+    public void WarnUser(String message) {
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_android)
+                .setContentTitle("Ispėjimas")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationManager.notify(2, builder.build());
+    }
+
 
 }

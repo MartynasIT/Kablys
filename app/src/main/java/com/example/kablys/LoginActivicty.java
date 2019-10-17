@@ -33,6 +33,7 @@ public class LoginActivicty extends AppCompatActivity {
         TextPasswd = findViewById(R.id.edit_passwd);
         ButtonLogin = findViewById(R.id.btn_login);
         TextViewRegister = findViewById(R.id.text_register);
+        db.addForbiddenLocations();
 
         Session = new SessionManager(this);
 

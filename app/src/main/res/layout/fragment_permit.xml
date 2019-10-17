@@ -22,7 +22,7 @@
         android:id="@+id/allPermits"
         android:scrollbars = "vertical"
         android:text=""
-        android:paddingLeft="5dp"
+        android:paddingLeft="15dp"
         android:layout_below="@+id/map_text"
         android:textSize="14sp"
         android:textColor="#000"/>

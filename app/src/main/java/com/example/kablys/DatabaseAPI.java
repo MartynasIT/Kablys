@@ -34,6 +34,10 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("Create Table Permits (ID Integer PRIMARY KEY AUTOINCREMENT, User Text," +
                 "StartTime Text, EndTIme Text, Notes Text, Notified Text)");
 
+        sqLiteDatabase.execSQL("Create Table ForbiddenPlaces (ID Integer PRIMARY KEY AUTOINCREMENT, long Text," +
+                "lat Text, Name Text)");
+
+
     }
 
     @Override
@@ -42,6 +46,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
 
     }
+
 
     public void  UpdatePermit (Object username, String endTime){
         SQLiteDatabase db  = getReadableDatabase();
@@ -54,6 +59,28 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         cv.clear();
         db.close();
 
+    }
+
+    public ArrayList<String[]> getForbiddenLocations() {
+        ArrayList<String[]> forbidden = new ArrayList<String[]>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM ForbiddenPlaces", null);
+
+        // Looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                String longi = cursor.getString(cursor.getColumnIndex("long"));
+                String lat = cursor.getString(cursor.getColumnIndex("lat"));
+                String name = cursor.getString(cursor.getColumnIndex("Name"));
+                forbidden.add( new String[]{longi, lat, name});
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+        return forbidden;
     }
 
     public ArrayList<String[]> getPermits(Object username) {
@@ -253,6 +280,23 @@ public class DatabaseAPI extends SQLiteOpenHelper {
             return  false;
 
     }
+
+
+    public void addForbiddenLocations() {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues c1 = new ContentValues();
+            ContentValues c2 = new ContentValues();
+            c1.put("long", "55.367950");
+            c1.put("lat", "21.330580");
+            c1.put("Name", "Krokų lankos botaninis–zoologinis draustinis");
+            db.insert("ForbiddenPlaces", null, c1);
+            c2.put("long", "54.472722");
+            c2.put("lat", "23.641855");
+            c2.put("Name", "Žuvinto biosferos rezervatas");
+            db.insert("ForbiddenPlaces", null, c2);
+            db.close();
+        }
 
 
 }

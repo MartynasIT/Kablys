@@ -3,11 +3,14 @@ package com.example.kablys;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +49,7 @@ public class PermitFragment extends Fragment {
         super.onCreate(savedInstanceState);
         db = new DatabaseAPI(ctx);
         Session = new SessionManager(ctx);
+
     }
 
     @Nullable
@@ -59,6 +63,7 @@ public class PermitFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         allPermits = view.findViewById(R.id.allPermits);
+        allPermits.setMovementMethod(new ScrollingMovementMethod());
         changePswd = view.findViewById(R.id.changePasswd);
         Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
         add =  toolbar.findViewById(R.id.add_permit);
@@ -84,9 +89,27 @@ public class PermitFragment extends Fragment {
             public void onClick(View view) {
                 DialogPermit dialog = new DialogPermit();
                 dialog.show(getFragmentManager(), "Add permit");
+                FragmentManager fm = getFragmentManager();
+                fm.executePendingTransactions();
+                dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        refresh();
+                    }
+                });
             }
         });
 
+
+    }
+    public void refresh()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            getFragmentManager().beginTransaction().detach(this).commitNow();
+            getFragmentManager().beginTransaction().attach(this).commitNow();
+        } else {
+            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+        }
     }
 
 

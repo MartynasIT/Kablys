@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -127,55 +128,20 @@ public class DialogPermit extends DialogFragment {
 
                  if (String.valueOf(duration.getSelectedItem()).equals("Dvi dienos"))
                  {
-                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy HH:mm", Locale.UK);
-                     Calendar c = Calendar.getInstance();
-                     try {
-                         c.setTime(sdf.parse(startTime));
-                     } catch (ParseException e) {
-                         e.printStackTrace();
-                     }
-                     c.add(Calendar.DATE, 2);
-                     sdf = new SimpleDateFormat("dd/MM/yyy HH:mm", Locale.UK);
-                     Date resultdate = new Date(c.getTimeInMillis());
-                     EndTime = sdf.format(resultdate);
-                     putPermit();
+                     helper(2);
                  }
 
 
                  else if (String.valueOf(duration.getSelectedItem()).equals("Mėnuo"))
                  {
-                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm", Locale.UK);
-                     Calendar c = Calendar.getInstance();
-                     try {
-                         c.setTime(sdf.parse(startTime));
-                     } catch (ParseException e) {
-                         e.printStackTrace();
-                     }
-                     c.add(Calendar.DATE, 30);
-                     sdf = new SimpleDateFormat("dd/MM/yyy hh:mm", Locale.UK);
-                     Date resultdate = new Date(c.getTimeInMillis());
-                     EndTime = sdf.format(resultdate);
-                     putPermit();
+                     helper(30);
                  }
 
                  else if (String.valueOf(duration.getSelectedItem()).equals("Metai"))
                  {
-                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm", Locale.UK);
-                     Calendar c = Calendar.getInstance();
-                     try {
-                         c.setTime(sdf.parse(startTime));
-                     } catch (ParseException e) {
-                         e.printStackTrace();
-                     }
-                     c.add(Calendar.DATE, 365);
-                     sdf = new SimpleDateFormat("dd/MM/yyy hh:mm", Locale.UK);
-                     Date resultdate = new Date(c.getTimeInMillis());
-                     EndTime = sdf.format(resultdate);
-                     putPermit();
+                     helper(365);
 
                  }
-
-
 
              }
              else
@@ -189,6 +155,23 @@ public class DialogPermit extends DialogFragment {
 
     }
 
+
+    private void helper (int amount)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy HH:mm", Locale.UK);
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(sdf.parse(startTime));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        c.add(Calendar.DATE, amount);
+        sdf = new SimpleDateFormat("dd/MM/yyy HH:mm", Locale.UK);
+        Date resultdate = new Date(c.getTimeInMillis());
+        EndTime = sdf.format(resultdate);
+        putPermit();
+    }
+
     private void putPermit()
     {
         String notes = "";
@@ -196,34 +179,8 @@ public class DialogPermit extends DialogFragment {
         db.addPermit(Session.get_username(), startTime, EndTime, notes);
         Toast.makeText(getContext(), "Idėta!",
                 Toast.LENGTH_SHORT).show();
-
         dismiss();
     }
-
-
-    private  void pickDate(final Calendar myCalendar)
-    {
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel(myCalendar);
-            }
-
-        };
-    }
-
-    private void updateLabel(Calendar myCalendar) {
-        String myFormat = "MM/dd/yy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALIAN);
-        expireDate.setText(sdf.format(myCalendar.getTime()));
-    }
-
 
 
 }

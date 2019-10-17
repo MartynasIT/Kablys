@@ -1,5 +1,8 @@
 package com.example.kablys;
 
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -34,7 +37,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        startService(new Intent(this, BackgroundService.class));
+        // jeigu backgroundo procesas yra isjungtas ji paleidziame
+        if (!isMyServiceRunning(BackgroundService.class)) {
+            Intent BackgroundService = new Intent(this, BackgroundService.class);
+            ContextWrapper cont = new ContextWrapper(getBaseContext());
+            cont.startService(BackgroundService);
+        }
 
         NavigationView navView = findViewById(R.id.navigation_view);
         navView.setNavigationItemSelectedListener(this);
@@ -46,6 +54,17 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 new MapFragment()).commit();
     }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
