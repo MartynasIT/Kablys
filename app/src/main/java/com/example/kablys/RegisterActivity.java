@@ -32,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         db = new DatabaseAPI(this);
         gmail = new EmailSender();
+
         TextUsername = findViewById(R.id.edit_username);
         TextPasswd = findViewById(R.id.edit_passwd);
         TextEmail = findViewById(R.id.edit_email);

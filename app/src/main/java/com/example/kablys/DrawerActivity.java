@@ -100,6 +100,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                         new PermitFragment()).commit();
                 getSupportActionBar().setTitle("Leidimai");
                 break;
+
+            case  R.id.nav_fishes:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new FishVikiFragment()).commit();
+                getSupportActionBar().setTitle("Žuvys");
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

@@ -41,6 +41,7 @@
     <string name="btn_permit">Gerai</string>
     <string name="permit_start_date">Galiojimo pradžia</string>
     <string name="permit_spinner_dur">Trukmė:</string>
+    <string name="nav_fishes">Žuvys</string>
 
     <string-array name="time_array">
         <item>"Pasirinkite laiką"</item>

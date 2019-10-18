@@ -159,8 +159,7 @@ public class BackgroundService extends Service {
                 loc2.setLongitude(Double.parseDouble(array[1]));
 
                 float distance = loc1.distanceTo(loc2) / 1000;
-                Toast.makeText(this, Float.toString(distance),
-                        Toast.LENGTH_SHORT).show();
+
                 if (distance < 5.0) //mazesnis nei 5km atstumas
                 {
                    WarnUser("Artėjate (atstumas mažesnis nei 5km) prie vietos kurioje yra uždrausta žvejoti. Vietos pavadinimas: " + array[2]);
