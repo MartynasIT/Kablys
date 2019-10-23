@@ -49,6 +49,9 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("Create Table Fishes (ID Integer PRIMARY KEY AUTOINCREMENT, Fish Text," +
                 "Description Text, Tips Text, Bait Text, Image Blob)");
 
+        sqLiteDatabase.execSQL("Create Table FishesinPond (ID Integer PRIMARY KEY AUTOINCREMENT, User Text, Fishes Text, " +
+                "Longitude Text, Latitude Text, Pond Text)");
+
         addFish(sqLiteDatabase);
         addForbiddenLocations(sqLiteDatabase);
 
@@ -147,6 +150,14 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         return permits;
     }
 
+    public  void removePond(Object username, String id)
+    {
+        SQLiteDatabase db  = getReadableDatabase();
+        db.delete("FishesinPond", "ID=? and User=?", new String[]{id, (String) username});
+        db.close();
+    }
+
+
     public  void removePermits(String endTime, Object username)
     {
         SQLiteDatabase db  = getReadableDatabase();
@@ -154,6 +165,31 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    public ArrayList<String[]> getFishesInPond(Object username) {
+        ArrayList<String[]> fishes = new ArrayList<String[]>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM FishesinPond WHERE User = ?", new String[] {String.valueOf(username)});
+
+        // Looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex("ID"));
+                String loni = cursor.getString(cursor.getColumnIndex("Longitude"));
+                String lati = cursor.getString(cursor.getColumnIndex("Latitude"));
+                String fish = cursor.getString(cursor.getColumnIndex("Fishes"));
+                String pond = cursor.getString(cursor.getColumnIndex("Pond"));
+                fishes.add( new String[]{loni,lati,fish, pond, Integer.toString(id)});
+
+            } while (cursor.moveToNext());
+        }
+
+        // return student list
+        db.close();
+        cursor.close();
+        return fishes;
+    }
 
     public ArrayList<Object[]> getLocations(Object username) {
         ArrayList<Object[]> locations = new ArrayList<Object[]>();
@@ -244,6 +280,20 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         db.delete("Locations", "User=?", new String[]{username});
         db.delete("Users", "Username=?", new String[]{username});
         db.close();
+
+    }
+
+    public  long addFishesToPond (Object user, String lat, String longi, String fish) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("User", (String) user);
+        contentValues.put("Longitude", longi);
+        contentValues.put("Latitude", lat);
+        contentValues.put("Fishes", fish);
+        contentValues.put("Pond", "1");
+        long result = db.insert("FishesinPond", null, contentValues);
+        db.close();
+        return result;
 
     }
 

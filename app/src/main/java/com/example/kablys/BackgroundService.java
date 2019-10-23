@@ -87,11 +87,11 @@ public class BackgroundService extends Service {
 
                 checkDistance(); // tikriname ar zvejys nera arti vietos kur uzdrausta zvejoti
 
-                handler.postDelayed(runnable, 5000); // kas kiek laiko kartos run funkcija
+                handler.postDelayed(runnable, 600000); // kas kiek laiko kartos run funkcija (10min)
             }
         };
 
-        handler.postDelayed(runnable, 5000); // po kiek laiko bus paleistas run
+        handler.postDelayed(runnable, 5000); // po kiek laiko bus paleistas run nuo programos paleidimo
     }
 
     @Override
@@ -127,7 +127,6 @@ public class BackgroundService extends Service {
             if (date.before(c2.getTime())) {
 
                 db.removePermits(array[1], Session.get_username());
-                Toast.makeText(context, c2.getTime().toString() + " VS " + date, Toast.LENGTH_LONG).show();
 
             }
 
@@ -144,29 +143,41 @@ public class BackgroundService extends Service {
         else {
             assert lm != null;
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
-            Location loc1 = new Location("");
-            loc1.setLatitude(latitude);
-            loc1.setLongitude(longitude);
+            assert location != null;
+            double latitude;
+            double longitude;
+            try
+            {
+               longitude = location.getLongitude();
+               latitude = location.getLatitude();
+                Location loc1 = new Location("");
+                loc1.setLatitude(latitude);
+                loc1.setLongitude(longitude);
 
-            Iterator<String[]> itr = ForbiddenLocations.iterator();
-            while (itr.hasNext()) {
-                String[] array = itr.next();
+                Iterator<String[]> itr = ForbiddenLocations.iterator();
+                while (itr.hasNext()) {
+                    String[] array = itr.next();
 
-                Location loc2 = new Location("");
-                loc2.setLatitude(Double.parseDouble(array[0]));
-                loc2.setLongitude(Double.parseDouble(array[1]));
+                    Location loc2 = new Location("");
+                    loc2.setLatitude(Double.parseDouble(array[0]));
+                    loc2.setLongitude(Double.parseDouble(array[1]));
 
-                float distance = loc1.distanceTo(loc2) / 1000;
+                    float distance = loc1.distanceTo(loc2) / 1000;
 
-                if (distance < 5.0) //mazesnis nei 5km atstumas
-                {
-                   WarnUser("Artėjate (atstumas mažesnis nei 5km) prie vietos kurioje yra uždrausta žvejoti. Vietos pavadinimas: " + array[2]);
+                    if (distance < 5.0) //mazesnis nei 5km atstumas
+                    {
+                        WarnUser("Artėjate (atstumas mažesnis nei 5km) prie vietos kurioje yra uždrausta žvejoti. Vietos pavadinimas: " + array[2]);
+
+                    }
 
                 }
+            }
+            catch (NullPointerException e)
+            {
 
             }
+
+
         }
     }
 
