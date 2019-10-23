@@ -67,7 +67,6 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     public static final int  PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 9004;
     private Context ctx;
     private GoogleMap mMap;
-    private GoogleMap inPond;
     private FusedLocationProviderClient fusedLocationClient;
     private  Location location;
     private static final float DEFAULT_ZOOM = 15f;
@@ -76,7 +75,6 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     SessionManager sessionManager;
     DatabaseAPI db;
     private  ArrayList<Object[]> locations = new ArrayList<Object[]>();
-    private  ArrayList<String[]> fishesInPond = new ArrayList<String[]>();
 
 
     public MapFragment() {
@@ -123,12 +121,9 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
             @Override
             public void onMapReady(GoogleMap Map) {
                 mMap = Map;
-                inPond = Map;
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 locations = db.getLocations(sessionManager.get_username());
-                fishesInPond = db.getFishesInPond(sessionManager.get_username());
                 addMarkers();
-                addFishesToPond();
                 if (ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
                         PackageManager.PERMISSION_GRANTED &&
                         ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
@@ -155,24 +150,6 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
                             @Override
                             public void onDismiss(DialogInterface dialogInterface) {
                              refresh();
-                            }
-                        });
-                    }
-                });
-
-                mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                    @Override
-                    public void onMapClick(LatLng point) {
-                        DialogFishesInPond dial = new DialogFishesInPond();
-                        dial.setTargetFragment(MapFragment.this, 2);
-                        dial.latLng = point;
-                        FragmentManager fm = getFragmentManager();
-                        dial.show(getFragmentManager(), "Add a fish");
-                        fm.executePendingTransactions();
-                        dial.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialogInterface) {
-                                refresh();
                             }
                         });
                     }
@@ -250,22 +227,6 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
 
         }
 
-     public  void addFishesToPond()
-    {
-        Iterator<String[]> itr = fishesInPond.iterator();
-        while (itr.hasNext()){
-            Object[] array = itr.next(); // You were just missing saving the value for reuse
-            LatLng latLng = new LatLng(Double.parseDouble((String) array[1]), Double.parseDouble((String) array[0]));
-            inPond.setOnMarkerClickListener(this);
-                inPond.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title(String.valueOf(array[2]))
-                        .snippet("")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.exclamation)));
-        }
-
-    }
-
     public boolean CheckMaps()
     {
         if (isServicesOK())
@@ -336,44 +297,26 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-        // zuvims kurios pagautos
-        Iterator<Object[]> itr = locations.iterator();
-        while (itr.hasNext()) {
-            Object[] array = itr.next();
-            LatLng latLng = new LatLng(Double.parseDouble((String) array[1]), Double.parseDouble((String) array[0]));
-            if (latLng.equals(marker.getPosition())) {
-                DialogCatch dial = new DialogCatch();
-                dial.setTargetFragment(MapFragment.this, 1);
-                dial.fish = (String) array[2];
-                dial.descr = (String) array[4];
-                dial.weight = (String) array[3];
-                if (array[5] != null) {
-                    dial.image = (byte[]) array[5];
+            Iterator<Object[]> itr = locations.iterator();
+            while (itr.hasNext()){
+                Object[] array = itr.next();
+                LatLng latLng = new LatLng(Double.parseDouble((String) array[1]), Double.parseDouble((String) array[0]));
+                if (latLng.equals(marker.getPosition()))
+                {
+                    DialogCatch dial = new DialogCatch();
+                    dial.setTargetFragment(MapFragment.this, 1);
+                    dial.fish = (String) array[2];
+                    dial.descr = (String) array[4];
+                    dial.weight = (String) array[3];
+                    if (array[5]!= null)
+                    {dial.image = (byte[]) array[5];}
+                    dial.markerID = (int) array[6];
+                    dial.show(getFragmentManager(), "Catch");
                 }
-                dial.markerID = (int) array[6];
-                dial.show(getFragmentManager(), "Catch");
-            }
 
         }
-        // zuvims kurios veisiasi
-
-        Iterator<String[]> pond = fishesInPond.iterator();
-        while (pond.hasNext()) {
-            String[] array2 = pond.next();
-            LatLng latLng2 = new LatLng(Double.parseDouble((String) array2[1]), Double.parseDouble((String) array2[0]));
-            if (latLng2.equals(marker.getPosition()) && array2[3].equals("1")) {
-                DialogViewInPond dial2 = new DialogViewInPond();
-                dial2.setTargetFragment(MapFragment.this, 2);
-                dial2.fish = (String) array2[2];
-                dial2.id = array2[4];
-                dial2.show(getFragmentManager(), "View Pond");
-            }
-
-        }
-
         return false;
     }
-
 
     public void refresh()
     {

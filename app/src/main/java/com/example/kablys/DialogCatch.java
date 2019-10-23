@@ -83,9 +83,7 @@ public class DialogCatch extends DialogFragment {
                         .setPositiveButton("Taip", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         db.removeLocation((String) Session.get_username(), markerID);
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new MapFragment()).commit();
-
+                        MapFragment map = new MapFragment();
                     }
                 })
                         .setNegativeButton("Ne", new DialogInterface.OnClickListener() {

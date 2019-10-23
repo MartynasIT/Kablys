@@ -42,9 +42,6 @@
     <string name="permit_start_date">Galiojimo pradžia</string>
     <string name="permit_spinner_dur">Trukmė:</string>
     <string name="nav_fishes">Žuvys</string>
-    <string name="fishes_pond">Žuvys</string>
-    <string name="mark_fishes_in_pond">Pažymėkite žuvis kurios čia veisiasi</string>
-    <string name="fishes_in_this_pond">Žuvys šiame tvenkinyje</string>
 
     <string-array name="time_array">
         <item>"Pasirinkite laiką"</item>

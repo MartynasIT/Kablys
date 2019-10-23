@@ -52,6 +52,15 @@
         <service android:name="com.example.kablys.BackgroundService" android:exported="false"
             android:stopWithTask="false"/>
 
+        <receiver
+            android:name="Restarter"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="restartservice" />
+            </intent-filter>
+        </receiver>
+
 
     </application>
 

@@ -87,11 +87,11 @@ public class BackgroundService extends Service {
 
                 checkDistance(); // tikriname ar zvejys nera arti vietos kur uzdrausta zvejoti
 
-                handler.postDelayed(runnable, 600000); // kas kiek laiko kartos run funkcija
+                handler.postDelayed(runnable, 5000); // kas kiek laiko kartos run funkcija
             }
         };
 
-        handler.postDelayed(runnable, 5000); // po kiek laiko bus paleistas run nuo programos paleidimo
+        handler.postDelayed(runnable, 5000); // po kiek laiko bus paleistas run
     }
 
     @Override
