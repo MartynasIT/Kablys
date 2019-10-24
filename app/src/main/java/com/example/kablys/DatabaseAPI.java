@@ -52,8 +52,12 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("Create Table FishesinPond (ID Integer PRIMARY KEY AUTOINCREMENT, User Text, Fishes Text, " +
                 "Longitude Text, Latitude Text, Pond Text)");
 
+        sqLiteDatabase.execSQL("Create Table Calendar (ID Integer PRIMARY KEY AUTOINCREMENT, Fish Text, Month Text, " +
+                "Bait Text, Gear Text, Bite Text, Forbid Text)");
+
         addFish(sqLiteDatabase);
         addForbiddenLocations(sqLiteDatabase);
+        addCalendar(sqLiteDatabase);
 
 
     }
@@ -163,6 +167,31 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         SQLiteDatabase db  = getReadableDatabase();
         db.delete("Permits", "EndTime=? and User=?", new String[]{endTime, (String) username});
         db.close();
+    }
+
+    public ArrayList<String[]> getCalendar() {
+        ArrayList<String[]> calendar = new ArrayList<String[]>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Calendar", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String fish = cursor.getString(cursor.getColumnIndex("Fish"));
+                String month = cursor.getString(cursor.getColumnIndex("Month"));
+                String bite = cursor.getString(cursor.getColumnIndex("Bite"));
+                String gear = cursor.getString(cursor.getColumnIndex("Gear"));
+                String Bait = cursor.getString(cursor.getColumnIndex("Bait"));
+                String forbid = cursor.getString(cursor.getColumnIndex("Forbid"));
+                calendar.add( new String[]{fish,month,bite, gear, Bait, forbid });
+
+            } while (cursor.moveToNext());
+        }
+
+        // return student list
+        db.close();
+        cursor.close();
+        return calendar;
     }
 
 
@@ -386,6 +415,51 @@ public class DatabaseAPI extends SQLiteOpenHelper {
 
         }
 
+    public void addCalendar(SQLiteDatabase db) {
+        ContentValues c1 = new ContentValues();
+        ContentValues c2 = new ContentValues();
+        ContentValues c3 = new ContentValues();
+        ContentValues c4 = new ContentValues();
+        ContentValues c5 = new ContentValues();
+        ContentValues c6 = new ContentValues();
+        
+        c1.put("Fish", "Aukšlė");
+        c1.put("Forbid", "nėra");
+        c1.put("Month", "rugsėjis");
+        c1.put("Gear", "plūdine meškere");
+        c1.put("Bait", "musė, musės lerva, sliekas, apsiuva, miltinė tešla, duona");
+        c1.put("Bite", "vidutinis");
+        db.insert("Calendar", null, c1);
+        c2.put("Fish", "Ešerys");
+        c2.put("Forbid", "nėra");
+        c2.put("Month", "rugsėjis");
+        c2.put("Gear", "plūdine ir dugnine meškere, spiningu");
+        c2.put("Bait", "sliekas, vabzdžių lervos, apsiuva, šoniplauka, dėle, blizgė, mikromasalai");
+        c2.put("Bite", "geras");
+        db.insert("Calendar", null, c2);
+        c3.put("Fish", "Gružlys");
+        c3.put("Forbid", "nėra");
+        c3.put("Month", "rugsėjis");
+        c3.put("Gear", "plūdine ir dugnine meškere, palaidyne");
+        c3.put("Bait", "ssliekas, vabzdžių lervos, apsiuva, dėle");
+        c3.put("Bite", "geras");
+        db.insert("Calendar", null, c3);
+        c4.put("Fish", "Karpis");
+        c4.put("Forbid", "nėra");
+        c4.put("Month", "rugsėjis");
+        c4.put("Gear", "plūdine meškere, dugnine meškere");
+        c4.put("Bait", "sliekas, vabzdžių lervos, apsiuva");
+        c4.put("Bite", "vidutinis");
+        db.insert("Calendar", null, c4);
+        c5.put("Fish", "Karosas");
+        c5.put("Forbid", "nėra");
+        c5.put("Month", "rugsėjis");
+        c5.put("Gear", "plūdine meškere");
+        c5.put("Bait", "sliekas, vabzdžių lervos, apsiuva");
+        c5.put("Bite", "vidutinis");
+        db.insert("Calendar", null, c5);
+
+    }
     public void addFish(SQLiteDatabase db) {
 
         ContentValues c1 = new ContentValues();

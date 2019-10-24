@@ -45,6 +45,7 @@
     <string name="fishes_pond">Žuvys</string>
     <string name="mark_fishes_in_pond">Pažymėkite žuvis kurios čia veisiasi</string>
     <string name="fishes_in_this_pond">Žuvys šiame tvenkinyje</string>
+    <string name="nav_calendar">Kalendorius</string>
 
     <string-array name="time_array">
         <item>"Pasirinkite laiką"</item>
@@ -80,6 +81,39 @@
         <item>"Mėnuo"</item>
         <item>"Metai"</item>
 
+    </string-array>
+
+    <string-array name="calendar_fishes">
+        <item>"Pasirinkite žuvį"</item>
+        <item>"Aukšlė"</item>
+        <item>"Ešerys"</item>
+        <item>"Gružlys"</item>
+        <item>"Karpis"</item>
+        <item>"Karosas"</item>
+        <item>"Karšis"</item>
+        <item>"Kiršlys"</item>
+        <item>"Kuoja"</item>
+        <item>"Lydeka"</item>
+        <item>"Lynas"</item>
+        <item>"Meknė"</item>
+        <item>"Plakis"</item>
+
+    </string-array>
+
+    <string-array name="calendar_month">
+        <item>"Pasirinkite mėnesį"</item>
+        <item>"rugsėjis"</item>
+        <item>"gruodis"</item>
+        <item>"lapkritis"</item>
+        <item>"spalis"</item>
+        <item>"rugpjūtis"</item>
+        <item>"liepa"</item>
+        <item>"birželis"</item>
+        <item>"gegužė"</item>
+        <item>"balandis"</item>
+        <item>"kovas"</item>
+        <item>"vasaris"</item>
+        <item>"sausis"</item>
     </string-array>
 
 </resources>

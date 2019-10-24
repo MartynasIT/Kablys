@@ -66,7 +66,6 @@ public class DialogViewInPond extends DialogFragment {
                         .setPositiveButton("Taip", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 db.removePond((String) Session.get_username(), id);
-
                             }
                         })
                         .setNegativeButton("Ne", new DialogInterface.OnClickListener() {

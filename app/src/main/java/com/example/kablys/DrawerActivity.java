@@ -106,6 +106,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                         new FishVikiFragment()).commit();
                 getSupportActionBar().setTitle("Žuvys");
                 break;
+
+            case  R.id.nav_calendar:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new CalendarFragment()).commit();
+                getSupportActionBar().setTitle("Kalendorius");
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
