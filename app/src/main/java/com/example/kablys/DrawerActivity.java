@@ -112,6 +112,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                         new CalendarFragment()).commit();
                 getSupportActionBar().setTitle("Kalendorius");
                 break;
+
+            case  R.id.nav_weather:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new WeatherFragment()).commit();
+                getSupportActionBar().setTitle("Orai");
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
