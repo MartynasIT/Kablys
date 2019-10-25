@@ -19,7 +19,7 @@ public class NetworkUtils {
     public static URL buildUrlForWeather() {
 
         String url = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/231459?apikey=uKL3VAbABHq6mNUGJ91mOMmFwjt6JneS&metric=true";
-        String UrlCurrent = "http://dataservice.accuweather.com/currentconditions/v1/?apikey=uKL3VAbABHq6mNUGJ91mOMmFwjt6JneS&details=true";
+        String UrlCurrent = "http://dataservice.accuweather.com/currentconditions/v1/231459?apikey=uKL3VAbABHq6mNUGJ91mOMmFwjt6JneS&details=true";
 
         URL wetherUrl = null;
         try {

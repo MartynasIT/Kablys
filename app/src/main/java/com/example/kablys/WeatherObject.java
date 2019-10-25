@@ -4,11 +4,12 @@ package com.example.kablys;
  * Created by Milind Amrutkar on 29-11-2017.
  */
 
-public class Weather {
+public class WeatherObject {
     String date;
     String minTemp;
     String maxTemp;
     String link;
+    int condition;
 
     public String getDate() {
         return date;
@@ -18,7 +19,19 @@ public class Weather {
         this.date = date;
     }
 
+
+    public void setCondition(int condition) {
+        this.condition = condition;
+    }
+
+    public int getCondition() {
+
+        return condition;
+    }
+
+
     public String getMinTemp() {
+
         return minTemp;
     }
 
