@@ -6,10 +6,13 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:id="@+id/weatherNow"
         android:padding="14dp">
 
         <RelativeLayout
@@ -109,10 +112,17 @@
 
             <TextView
                 android:id="@+id/biteNow"
-                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit ="marquee_forever"
+                android:focusable="true"
                 android:text=""
-                android:textSize="19sp"
-                android:layout_width="match_parent" />
+                android:focusableInTouchMode="true"
+                android:scrollHorizontally="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="19sp"/>
+
 
         </LinearLayout>
 
@@ -127,17 +137,11 @@
             android:layout_toRightOf="@+id/b" />
 
 
-    </RelativeLayout>
 
-    <Button
-        android:layout_width="95dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_more_weather"
-        android:text="Daugiau"
+    </RelativeLayout>
     <ListView
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/idListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
 </LinearLayout>

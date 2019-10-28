@@ -1,5 +1,8 @@
 package com.example.kablys;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.AsyncTask;
@@ -7,8 +10,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +34,8 @@ public class WeatherFragment extends Fragment {
     private TextView temp, pressure, humidity, fishBite;
     private ImageView WeatherIcon;
     private String pressureTendency;
+    private Button more, less;
+    private RelativeLayout WeatherNow;
     Context ctx;
 
     public WeatherFragment() {
@@ -80,7 +87,9 @@ public class WeatherFragment extends Fragment {
        WeatherIcon = view.findViewById(R.id.conditionToday);
        pressure = view.findViewById(R.id.PressureNow);
         humidity = view.findViewById(R.id.HumidityNow);
-        fishBite = view.findViewById(R.id.biteNow);
+       fishBite = view.findViewById(R.id.biteNow);
+       view.findViewById(R.id.biteNow).setSelected(true);
+        WeatherNow = view.findViewById(R.id.weatherNow);
         URL weatherUrl = buildUrlForWeather(0);
         new FetchWeatherDetails().execute(weatherUrl);
         URL weatherNow = buildUrlForWeather(1);
@@ -207,6 +216,7 @@ public class WeatherFragment extends Fragment {
             weatherArrayList.clear();
         }
 
+
         if(weatherSearchResults != null) {
             try {
                 JSONArray mJsonArray = new JSONArray(weatherSearchResults);
@@ -225,34 +235,52 @@ public class WeatherFragment extends Fragment {
                 String Humidity = mJsonObject.getString("RelativeHumidity");
                 humidity.setText(Humidity + " %");
 
+
                 double pressure = Double.parseDouble(pressureText);
-                String bite = "";
+                String bite;
                 if (pressure >= 30.50 && pressureTendency.equals("Steady"))
                 {
-                    bite = "Vidutinis arba lėtas, dėl aukšto slėgio. Žvejok kantriai giliame vandenyje";
+                    bite = "Prognozė: Vidutinis arba lėtas kibimas, dėl aukšto slėgio. Žvejok kantriai giliame vandenyje";
+                    fishBite.setText(bite);
+                    fishBite.setTextColor(Color.YELLOW);
                 }
 
                 else if (pressureTendency.equals("Rising") && pressure < 30.50)
                 {
-                    bite = "Žuvys atkyvėja dėl augančio slėgio, bet aktyvumas dugną mėgstančių žuvų mažėja";
+                    bite = "Prognozė: Žuvys atkyvėja dėl augančio slėgio, bet aktyvumas dugną mėgstančių žuvų mažėja";
+                    fishBite.setText(bite);
+                    fishBite.setTextColor(Color.GREEN);
                 }
 
                 else if (pressureTendency.equals("Falling") && pressure <= 30.50  &&  pressure > 29.60 )
                 {
-                    bite = " Žuvų aktyvumas mažėja, dėl krentančio slėgio. Bet yra išimčių kai kurioms plėšrių žuvų rūšims, kaip šamai, lydekos";
+                    bite = "Prognozė: Žuvų aktyvumas mažėja, dėl krentančio slėgio. Bet yra išimčių kai kurioms plėšrių žuvų rūšims, kaip šamai, lydekos";
+                    fishBite.setText(bite);
+                    fishBite.setTextColor(Color.YELLOW);
                 }
 
                else if (pressure >= 29.70 && pressure <= 30.40 && pressureTendency.equals("Steady"))
                 {
-                    bite = "Normalus kibimas, pabandytk įvairius jaukus ir technikas";
+                    bite = "Prognozė: Normalus kibimas, pabandytk įvairius jaukus ir technikas";
+                    fishBite.setText(bite);
+                    fishBite.setTextColor(Color.GREEN);
                 }
 
                 else if (pressure <= 29.60 && pressureTendency.equals("Steady"))
                 {
-                    bite = "Lėtas kibimas, dėl žemo slėgio, reiktu žvejoti giliai ir lėtai";
+                    bite = "Prognozė: Lėtas kibimas, dėl žemo slėgio, reiktu žvejoti giliai ir lėtai";
+                    fishBite.setText(bite);
+                    fishBite.setTextColor(Color.RED);
                 }
 
-                fishBite.setText(bite);
+                else
+                {
+                    bite = "Neaiskus kibimas";
+                    fishBite.setText(bite);
+
+                }
+
+
 
 
                int conditionNR = mJsonObject.getInt("WeatherIcon");
