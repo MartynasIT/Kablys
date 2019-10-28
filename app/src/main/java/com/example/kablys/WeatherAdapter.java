@@ -16,9 +16,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by Milind Amrutkar on 29-11-2017.
- */
 
 public class WeatherAdapter extends ArrayAdapter<WeatherObject> {
     public WeatherAdapter(@NonNull Context context, ArrayList<WeatherObject> weatherArrayList) {
@@ -140,5 +137,7 @@ public class WeatherAdapter extends ArrayAdapter<WeatherObject> {
         return convertView;
 
     }
+
+
 
 }

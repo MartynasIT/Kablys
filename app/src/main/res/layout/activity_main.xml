@@ -20,48 +20,118 @@
                 android:id="@+id/tvDate"
                 android:layout_width="210dp"
                 android:layout_height="wrap_content"
-                android:text="Šiandien Vilniuje"
+                android:text="Dabar Vilniuje"
                 android:textColor="#000000"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-
-            <TextView
-                android:id="@+id/tvTemperature"
-                android:layout_width="210dp"
-                android:layout_height="wrap_content"
-                android:text="Temperatura"
-                android:layout_below="@+id/tvDate"
-                android:textSize="19sp" />
         </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="210dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/b"
-            android:layout_below="@+id/d"
-            android:orientation="horizontal">
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/b"
+        android:layout_below="@+id/d"
+        android:orientation="horizontal">
 
 
             <TextView
-                android:id="@+id/tempNow"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Temperatūra"
+                android:textSize="19sp"/>
+
+            <TextView
+                android:id="@+id/TempNow"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
-                android:textSize="19sp"
-                android:textStyle="normal" />
+                android:textSize="19sp" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/b"
+            android:id="@+id/press"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Slėgis"
+                android:textSize="19sp"/>
+
+            <TextView
+                android:id="@+id/PressureNow"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:textSize="19sp" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/press"
+            android:id="@+id/humid"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Drėgnumas"
+                android:textSize="19sp"/>
+
+            <TextView
+                android:id="@+id/HumidityNow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:textSize="19sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/humid"
+            android:id="@+id/bite"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="Kibimas: "
+                android:textSize="19sp"/>
+
+            <TextView
+                android:id="@+id/biteNow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:textSize="19sp" />
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/conditionToday"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="9dp"
             android:layout_width="172dp"
             android:layout_height="71dp"
-            android:layout_toEndOf="@+id/c"
-            android:layout_toRightOf="@+id/c" />
+            android:layout_toEndOf="@+id/b"
+            android:layout_toRightOf="@+id/b" />
 
 
     </RelativeLayout>

@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +26,9 @@ public class WeatherFragment extends Fragment {
 
     private ArrayList<WeatherObject> weatherArrayList = new ArrayList<>();
     private ListView listView;
-    private TextView temp;
+    private TextView temp, pressure, humidity, wind;
+    private ImageView WeatherIcon;
+    private String pressureTendency;
     Context ctx;
 
     public WeatherFragment() {
@@ -72,8 +76,14 @@ public class WeatherFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         listView = view.findViewById(R.id.idListView);
+       temp = view.findViewById(R.id.TempNow);
+       WeatherIcon = view.findViewById(R.id.conditionToday);
+        //pressure = view.findViewById(R.id.PressureNow);
+        humidity = view.findViewById(R.id.HumidityNow);
         URL weatherUrl = buildUrlForWeather(0);
         new FetchWeatherDetails().execute(weatherUrl);
+        URL weatherNow = buildUrlForWeather(1);
+        new WeatherNow().execute(weatherNow);
 
     }
 
@@ -198,30 +208,155 @@ public class WeatherFragment extends Fragment {
 
         if(weatherSearchResults != null) {
             try {
-                JSONObject rootObject = new JSONObject(weatherSearchResults);
-                JSONArray results = rootObject.getJSONArray("DailyForecasts");
+                JSONArray mJsonArray = new JSONArray(weatherSearchResults);
+                JSONObject mJsonObject = mJsonArray.getJSONObject(0);
 
-                for (int i = 0; i < results.length(); i++) {
-                    WeatherObject weatherObject = new WeatherObject();
-                    JSONObject resultsObj = results.getJSONObject(i);
-                    String date = resultsObj.getString("Date");
-                    date = date.substring(0,10);
+                JSONObject temperatureObj = mJsonObject.getJSONObject("Temperature");
+                String minTemperature = temperatureObj.getJSONObject("Metric").getString("Value");
+                temp.setText(minTemperature + " C");
 
-                    JSONObject temperatureObj = resultsObj.getJSONObject("Temperature");
-                    String minTemperature = temperatureObj.getJSONObject("Minimum").getString("Value");
-                    String maxTemperature = temperatureObj.getJSONObject("Maximum").getString("Value");
+                JSONObject pressureObj = mJsonObject.getJSONObject("Pressure");
+                String pressureText = pressureObj.getJSONObject("Imperial").getString("Value");
+                pressure.setText(pressureText + "");
 
-                    JSONObject dayObj = resultsObj.getJSONObject("Day");
-                    int condition = dayObj.getInt("Icon");
+                JSONObject pressureTendc = mJsonObject.getJSONObject("PressureTendency");
+                pressureTendency = pressureTendc.getString("LocalizedText");
+                String Humidity = mJsonObject.getString("RelativeHumidity");
+                humidity.setText(Humidity);
+
+                double pressure = Double.parseDouble(pressureText);
+                String bite = 
+                if (pressure >= 30.50 && pressureTendency.equals("Steady"))
+                {
 
                 }
+
+
+               int conditionNR = mJsonObject.getInt("WeatherIcon");
+                switch (conditionNR) {
+                    case 1:
+                        WeatherIcon.setImageResource(R.drawable.vienas);
+                        break;
+
+                    case 2:
+                        WeatherIcon.setImageResource(R.drawable.du);
+                        break;
+                    case 3:
+                        WeatherIcon.setImageResource(R.drawable.trys);
+                        break;
+                    case 4:
+                        WeatherIcon.setImageResource(R.drawable.keturi);
+                        break;
+                    case 5:
+                        WeatherIcon.setImageResource(R.drawable.penki);
+                        break;
+                    case 6:
+                        WeatherIcon.setImageResource(R.drawable.sesi);
+                        break;
+                    case 7:
+                        WeatherIcon.setImageResource(R.drawable.septyni);
+                        break;
+
+                    case 8:
+                        WeatherIcon.setImageResource(R.drawable.astuoni);
+                        break;
+                    case 11:
+                        WeatherIcon.setImageResource(R.drawable.vienolika);
+                        break;
+                    case 12:
+                        WeatherIcon.setImageResource(R.drawable.dvylika);
+                        break;
+                    case 13:
+                        WeatherIcon.setImageResource(R.drawable.trylika);
+                        break;
+                    case 14:
+                        WeatherIcon.setImageResource(R.drawable.keturiolika);
+                        break;
+
+                    case 15:
+                        WeatherIcon.setImageResource(R.drawable.penkiolika);
+                        break;
+                    case 16:
+                        WeatherIcon.setImageResource(R.drawable.sesiolika);
+                        break;
+                    case 17:
+                        WeatherIcon.setImageResource(R.drawable.septyniolika);
+                        break;
+                    case 18:
+                        WeatherIcon.setImageResource(R.drawable.astuoniolika);
+                        break;
+                    case 19:
+                        WeatherIcon.setImageResource(R.drawable.devyniolika);
+                        break;
+                    case 20:
+                        WeatherIcon.setImageResource(R.drawable.dvidesimt);
+                        break;
+                    case 21:
+                        WeatherIcon.setImageResource(R.drawable.dvidesimtvienas);
+                        break;
+                    case 22:
+                        WeatherIcon.setImageResource(R.drawable.dvidesimtdu);
+                        break;
+                    case 23:
+                        WeatherIcon.setImageResource(R.drawable.dvidesimttrys);
+                        break;
+                    case 24:
+                        WeatherIcon.setImageResource(R.drawable.dvidesimtketuri);
+                        break;
+                    case 25:
+                        WeatherIcon.setImageResource(R.drawable.dvidesimtpenki);
+                        break;
+                    case 26:
+                        WeatherIcon.setImageResource(R.drawable.dvidesimtsesi);
+                        break;
+                    case 27:
+                        WeatherIcon.setImageResource(R.drawable.dvidesimtdevyni);
+                        break;
+                    case 29:
+                        WeatherIcon.setImageResource(R.drawable.dvidesimtdevyni);
+                        break;
+                    case 31:
+                        WeatherIcon.setImageResource(R.drawable.tridesimtvienas);
+                        break;
+                    case 32:
+                        WeatherIcon.setImageResource(R.drawable.tridesimtdu);
+                        break;
+                    case 33:
+                        WeatherIcon.setImageResource(R.drawable.tridesimtrys);
+                        break;
+                    case 34:
+                        WeatherIcon.setImageResource(R.drawable.trisdesimtketuri);
+                        break;
+                    case 35:
+                        WeatherIcon.setImageResource(R.drawable.trisdesimtpenki);
+                        break;
+                    case 36:
+                        WeatherIcon.setImageResource(R.drawable.trisdesimtsesi);
+                        break;
+                    case 37:
+                        WeatherIcon.setImageResource(R.drawable.trisdesimtseptyni);
+                        break;
+                    case 38:
+                        WeatherIcon.setImageResource(R.drawable.trisdesimtastuoni);
+                        break;
+                    case 39:
+                        WeatherIcon.setImageResource(R.drawable.trisdesimtdevyni);
+                        break;
+
+                }
+
+
+
+
 
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
+        }
         }
 
     }
-}
 
