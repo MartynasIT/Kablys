@@ -26,7 +26,7 @@ public class WeatherFragment extends Fragment {
 
     private ArrayList<WeatherObject> weatherArrayList = new ArrayList<>();
     private ListView listView;
-    private TextView temp, pressure, humidity, wind;
+    private TextView temp, pressure, humidity, fishBite;
     private ImageView WeatherIcon;
     private String pressureTendency;
     Context ctx;
@@ -38,9 +38,9 @@ public class WeatherFragment extends Fragment {
 
         String url = null;
         if (k == 0)
-        { url = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/231459?apikey=uKL3VAbABHq6mNUGJ91mOMmFwjt6JneS&metric=true";}
+        { url = "http://dataservice.accuweather.com/forecasts/v1/daily/5day/231459?apikey=5lwAW3tk5dAxpDUh28dLQZY9QsD8e7tW&metric=true";}
        else
-        { url = "http://dataservice.accuweather.com/currentconditions/v1/231459?apikey=uKL3VAbABHq6mNUGJ91mOMmFwjt6JneS&details=true";}
+        { url = "http://dataservice.accuweather.com/currentconditions/v1/231459?apikey=5lwAW3tk5dAxpDUh28dLQZY9QsD8e7tW&details=true";}
 
         URL wetherUrl = null;
         try {
@@ -78,8 +78,9 @@ public class WeatherFragment extends Fragment {
         listView = view.findViewById(R.id.idListView);
        temp = view.findViewById(R.id.TempNow);
        WeatherIcon = view.findViewById(R.id.conditionToday);
-        //pressure = view.findViewById(R.id.PressureNow);
+       pressure = view.findViewById(R.id.PressureNow);
         humidity = view.findViewById(R.id.HumidityNow);
+        fishBite = view.findViewById(R.id.biteNow);
         URL weatherUrl = buildUrlForWeather(0);
         new FetchWeatherDetails().execute(weatherUrl);
         URL weatherNow = buildUrlForWeather(1);
@@ -217,19 +218,41 @@ public class WeatherFragment extends Fragment {
 
                 JSONObject pressureObj = mJsonObject.getJSONObject("Pressure");
                 String pressureText = pressureObj.getJSONObject("Imperial").getString("Value");
-                pressure.setText(pressureText + "");
+                pressure.setText(pressureText + " inHg");
 
                 JSONObject pressureTendc = mJsonObject.getJSONObject("PressureTendency");
                 pressureTendency = pressureTendc.getString("LocalizedText");
                 String Humidity = mJsonObject.getString("RelativeHumidity");
-                humidity.setText(Humidity);
+                humidity.setText(Humidity + " %");
 
                 double pressure = Double.parseDouble(pressureText);
-                String bite = 
+                String bite = "";
                 if (pressure >= 30.50 && pressureTendency.equals("Steady"))
                 {
-
+                    bite = "Vidutinis arba lėtas, dėl aukšto slėgio. Žvejok kantriai giliame vandenyje";
                 }
+
+                else if (pressureTendency.equals("Rising") && pressure < 30.50)
+                {
+                    bite = "Žuvys atkyvėja dėl augančio slėgio, bet aktyvumas dugną mėgstančių žuvų mažėja";
+                }
+
+                else if (pressureTendency.equals("Falling") && pressure <= 30.50  &&  pressure > 29.60 )
+                {
+                    bite = " Žuvų aktyvumas mažėja, dėl krentančio slėgio. Bet yra išimčių kai kurioms plėšrių žuvų rūšims, kaip šamai, lydekos";
+                }
+
+               else if (pressure >= 29.70 && pressure <= 30.40 && pressureTendency.equals("Steady"))
+                {
+                    bite = "Normalus kibimas, pabandytk įvairius jaukus ir technikas";
+                }
+
+                else if (pressure <= 29.60 && pressureTendency.equals("Steady"))
+                {
+                    bite = "Lėtas kibimas, dėl žemo slėgio, reiktu žvejoti giliai ir lėtai";
+                }
+
+                fishBite.setText(bite);
 
 
                int conditionNR = mJsonObject.getInt("WeatherIcon");

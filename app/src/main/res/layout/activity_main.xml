@@ -101,28 +101,21 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/humid"
             android:id="@+id/bite"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="Kibimas: "
-                android:textSize="19sp"/>
-
-            <TextView
                 android:id="@+id/biteNow"
-                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text=""
-                android:textSize="19sp" />
+                android:textSize="19sp"
+                android:layout_width="match_parent" />
 
         </LinearLayout>
+
 
         <ImageView
             android:id="@+id/conditionToday"
@@ -136,10 +129,15 @@
 
     </RelativeLayout>
 
+    <Button
+        android:layout_width="95dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_more_weather"
+        android:text="Daugiau"
     <ListView
+        android:visibility="gone"
         android:id="@+id/idListView"
         android:layout_width="match_parent"
-        android:layout_below="@+id/today_weather"
         android:layout_height="wrap_content"/>
 
 </LinearLayout>
