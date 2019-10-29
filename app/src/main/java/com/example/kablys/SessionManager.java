@@ -29,6 +29,16 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void set_ChallengeDate(String date){
+        editor.putString("Date", date);
+        editor.commit();
+    }
+
+    public void enableChallenges(boolean status){
+        editor.putBoolean("Status", status);
+        editor.commit();
+    }
+
     public boolean is_logged_in() {
         return preferences.getBoolean("State", false);
     }
@@ -41,4 +51,11 @@ public class SessionManager {
         return preferences.getString("Email", null);
     }
 
+    public String get_ChallengeDate() {
+        return preferences.getString("Date", null);
+    }
+
+    public boolean get_status() {
+        return preferences.getBoolean("Status", true);
+    }
 }

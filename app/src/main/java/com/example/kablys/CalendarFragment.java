@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -27,12 +28,13 @@ import java.util.Iterator;
 
 
 public class CalendarFragment extends Fragment {
-    TextView  bait, gear, forbid, bite;
+    TextView  bait, gear, forbid, bite, noInfo;
     Button add;
     Context ctx;
     DatabaseAPI db;
     SessionManager Session;
     Spinner month, fish;
+    RelativeLayout body;
     private ArrayList<String[]> calendar = new ArrayList<String[]>();
 
 
@@ -63,7 +65,7 @@ public class CalendarFragment extends Fragment {
         return inflater.inflate(R.layout.layout_calendar_dialog, container, false);
     }
 
-    private void putData(String month, String fish)
+    private boolean putData(String month, String fish)
     {
         Iterator<String[]> itr = calendar.iterator();
         while (itr.hasNext()) {
@@ -74,10 +76,12 @@ public class CalendarFragment extends Fragment {
                 bait.setText(array[4].toString());
                 forbid.setText(array[5].toString());
                 gear.setText(array[3].toString());
+                return true;
 
             }
 
         }
+        return false;
     }
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -88,19 +92,35 @@ public class CalendarFragment extends Fragment {
         gear = view.findViewById(R.id.calendar_gear);
         bite = view.findViewById(R.id.calendar_bite);
         forbid = view.findViewById(R.id.calendar_forbid);
+        noInfo = view.findViewById(R.id.CalendarNoInfo);
+        body = view.findViewById(R.id.CalendarBody);
 
         fish.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                if ((!fish.getSelectedItem().equals("Pasirinkite žuvį")) && (!month.getSelectedItem().equals("Pasirinkite mėnesį")))
                {
-                 putData(month.getSelectedItem().toString(), fish.getSelectedItem().toString());
+                 if(putData(month.getSelectedItem().toString(), fish.getSelectedItem().toString()))
+                 {
+                    body.setVisibility(View.VISIBLE);
+                    noInfo.setVisibility(View.GONE);
+                 }
+                 else
+                 {
+                     body.setVisibility(View.INVISIBLE);
+                     noInfo.setVisibility(View.VISIBLE);
+                 }
+               }
+
+               else
+               {
+                   noInfo.setVisibility(View.GONE);
                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                noInfo.setVisibility(View.GONE);
             }
 
         });
@@ -108,7 +128,26 @@ public class CalendarFragment extends Fragment {
         month.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                fish.getSelectedItem();
+                if ((!fish.getSelectedItem().equals("Pasirinkite žuvį")) && (!month.getSelectedItem().equals("Pasirinkite mėnesį")))
+                {
+                    if(putData(month.getSelectedItem().toString(), fish.getSelectedItem().toString()))
+                    {
+                        body.setVisibility(View.VISIBLE);
+                        noInfo.setVisibility(View.GONE);
+                    }
+                    else
+                    {
+                        body.setVisibility(View.INVISIBLE);
+                        noInfo.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                else
+                {
+                    noInfo.setVisibility(View.GONE);
+                }
+
+
             }
 
             @Override

@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 
@@ -18,6 +20,7 @@ public class AccountFragment extends Fragment {
     TextView deletACC;
     TextView changePswd;
     Context ctx;
+    Switch onOff;
     DatabaseAPI db;
     SessionManager Session;
 
@@ -51,6 +54,29 @@ public class AccountFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         deletACC = view.findViewById(R.id.deleteACC);
         changePswd = view.findViewById(R.id.changePasswd);
+        onOff = view.findViewById(R.id.ChallengesOnOff);
+
+        if (Session.get_status())
+        {
+            onOff.setChecked(true);
+        }
+        else
+        {
+            onOff.setChecked(false);
+        }
+        onOff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+              if (onOff.isChecked())
+              {
+                  Session.enableChallenges(true);
+              }
+
+              else
+              {
+                  Session.enableChallenges(false);
+              }
+            }
+        });
 
         deletACC.setOnClickListener(new View.OnClickListener()
         {
@@ -64,6 +90,7 @@ public class AccountFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 db.removeAccount((String) Session.get_username());
                                 Session.set_logged_in(false);
+                                Session.set_ChallengeDate(null);
                                 Session.set_username("");
                                 Session.set_email("");
                                 Intent LoginIntent = new Intent(ctx, LoginActivicty.class);

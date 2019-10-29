@@ -101,10 +101,7 @@ public class BackgroundService extends Service {
 
     @Override
     public void onDestroy() {
-       // Intent broadcastIntent = new Intent();
-       // broadcastIntent.setAction("restartservice");
-      //  broadcastIntent.setClass(this, Restarter.class);
-       // this.sendBroadcast(broadcastIntent);
+
     }
 
     private void checkPermits() throws ParseException {

@@ -6,6 +6,8 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,17 +17,30 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 
 
 public class DrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     SessionManager Session;
+    DatabaseAPI db;
+    private String CHANNEL_ID = "kablys";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         Session = new SessionManager(this);
+        db = new DatabaseAPI(this);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -43,6 +58,9 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             ContextWrapper cont = new ContextWrapper(getBaseContext());
             cont.startService(BackgroundService);
         }
+
+        if (Session.get_status()) // jeigu vartotojas turi enablines challengus
+        giveChallenge();
 
         NavigationView navView = findViewById(R.id.navigation_view);
         navView.setNavigationItemSelectedListener(this);
@@ -133,6 +151,61 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         else {
             super.onBackPressed();
         }
+    }
+
+    public void giveChallenge()
+    {
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        String currentDate = dateFormat.format(date);
+        Calendar c1 = Calendar.getInstance();
+        Date lastDate = null;
+        try {
+            lastDate = dateFormat.parse(Session.get_ChallengeDate());
+        } catch (ParseException| NullPointerException e) {
+
+        }
+
+        if (lastDate != null) {
+
+            if (lastDate.after(c1.getTime())) { // mes norime isuki pushinti tik 1 karta i diena
+
+                PostChallenge(currentDate);
+            }
+        }
+
+        else
+        {
+            PostChallenge(currentDate);
+        }
+
+
+    }
+
+    private  void PostChallenge(String currentDate )
+    {
+        ArrayList challenges = new ArrayList();
+        challenges = db.getChallenges();
+        Random rn = new Random();
+        int max = 10;
+        int min = 0;
+        int pos = rn.nextInt(max - min + 1) + min;
+        createNotification((String) challenges.get(pos));
+        Session.set_ChallengeDate(currentDate);
+    }
+
+    public void createNotification(String message) {
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_android)
+                .setContentTitle("Šios dienos išukis")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationManager.notify(4, builder.build());
     }
 
 

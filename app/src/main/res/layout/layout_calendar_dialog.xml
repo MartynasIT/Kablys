@@ -8,17 +8,20 @@
     android:padding="15dp">
 
     <TextView
+        android:id="@+id/calendar_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/calendar_text"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:text="Kibimo kalendorius"
-        android:textSize="18sp"
-        android:textColor="#000"/>
+        android:textColor="#000"
+        android:textSize="20sp" />
 
 
     <LinearLayout android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@+id/calendar_text"
+        android:layout_marginTop="15dp"
         android:id="@+id/month_spinner">
 
         <TextView
@@ -38,6 +41,16 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Nėra informacijos"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:id="@+id/CalendarNoInfo"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
     <LinearLayout android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@+id/month_spinner"
@@ -47,7 +60,6 @@
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:id="@+id/permit_duration"
-
             android:textSize="18sp"
             android:text="Žuvis"/>
 
@@ -64,6 +76,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fishy_spinner"
+        android:visibility="invisible"
+        android:id="@+id/CalendarBody"
         android:padding="15dp">
 
     <TextView

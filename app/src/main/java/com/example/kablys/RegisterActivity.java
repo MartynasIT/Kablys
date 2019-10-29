@@ -23,6 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button ButtonRegister;
     TextView TextViewlogin;
     DatabaseAPI db;
+    SessionManager Session;
     EmailSender gmail;
     boolean connection;
 
@@ -31,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         db = new DatabaseAPI(this);
+        Session = new SessionManager(this);
         gmail = new EmailSender();
 
         TextUsername = findViewById(R.id.edit_username);
@@ -39,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
         ComfTextPasswd = findViewById(R.id.edit_comf_passwd);
         ButtonRegister = findViewById(R.id.btn_register);
         TextViewlogin = findViewById(R.id.text_register);
+
         // patikriname ar yra interneto rysis, kadangi bus isiustas email su duomenimis
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
         if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
@@ -123,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 if ( k!=1) {
+                    Session.enableChallenges(true); // jeigu kuria vartotoja kad naujam varotojui butu ijungti challengai
                     Toast.makeText(RegisterActivity.this, "Prisisegistruota!",
                             Toast.LENGTH_SHORT).show();
                     long val = db.addUser(username, makeMD5(password), email);

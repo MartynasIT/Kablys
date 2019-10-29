@@ -275,7 +275,7 @@ public class WeatherFragment extends Fragment {
 
                 else
                 {
-                    bite = "Neaiskus kibimas";
+                    bite = "Neaiškus kibimas";
                     fishBite.setText(bite);
 
                 }

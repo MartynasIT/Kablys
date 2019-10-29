@@ -55,9 +55,12 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("Create Table Calendar (ID Integer PRIMARY KEY AUTOINCREMENT, Fish Text, Month Text, " +
                 "Bait Text, Gear Text, Bite Text, Forbid Text)");
 
+        sqLiteDatabase.execSQL("Create Table Challenges (ID Integer PRIMARY KEY AUTOINCREMENT, Challenge Text)");
+
         addFish(sqLiteDatabase);
         addForbiddenLocations(sqLiteDatabase);
         addCalendar(sqLiteDatabase);
+        addChallenge(sqLiteDatabase);
 
 
     }
@@ -128,6 +131,25 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         db.close();
         cursor.close();
         return forbidden;
+    }
+
+    public ArrayList getChallenges() {
+        ArrayList challenges = new ArrayList();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Challenges", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String challenge = cursor.getString(cursor.getColumnIndex("Challenge"));
+                challenges.add(challenge);
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+        return challenges;
     }
 
     public ArrayList<String[]> getPermits(Object username) {
@@ -415,6 +437,42 @@ public class DatabaseAPI extends SQLiteOpenHelper {
 
         }
 
+    public void addChallenge(SQLiteDatabase db) {
+
+        ContentValues c1 = new ContentValues();
+        ContentValues c2 = new ContentValues();
+        ContentValues c3 = new ContentValues();
+        ContentValues c4 = new ContentValues();
+        ContentValues c5 = new ContentValues();
+        ContentValues c6 = new ContentValues();
+        ContentValues c7 = new ContentValues();
+        ContentValues c8 = new ContentValues();
+        ContentValues c9 = new ContentValues();
+        ContentValues c10 = new ContentValues();
+
+        c1.put("Challenge", "Pagauk 1kg Lydeką, naudojant meškerę");
+        db.insert("Challenges", null, c1);
+        c2.put("Challenge", "Pagauk 0,5kg Karpį, naudojant slieką");
+        db.insert("Challenges", null, c2);
+        c3.put("Challenge", "Pagauk 2,5kg Šamą, naudojant dirbtini jauką");
+        db.insert("Challenges", null, c3);
+        c4.put("Challenge", "Pagauk 1kg žuvį Neryje");
+        db.insert("Challenges", null, c4);
+        c5.put("Challenge", "Pagauk 5kg žuvį ežere");
+        db.insert("Challenges", null, c5);
+        c6.put("Challenge", "Pagauk 1 kuoja");
+        db.insert("Challenges", null, c6);
+        c7.put("Challenge", "Pagauk 2 karpius");
+        db.insert("Challenges", null, c7);
+        c8.put("Challenge", "Pagauk 2 lydekas");
+        db.insert("Challenges", null, c8);
+        c9.put("Challenge", "Pagauk kažką");
+        db.insert("Challenges", null, c9);
+        c10.put("Challenge", "Pagauk 2 ešerius");
+        db.insert("Challenges", null, c10);
+    }
+
+
     public void addCalendar(SQLiteDatabase db) {
         ContentValues c1 = new ContentValues();
         ContentValues c2 = new ContentValues();
@@ -422,6 +480,25 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         ContentValues c4 = new ContentValues();
         ContentValues c5 = new ContentValues();
         ContentValues c6 = new ContentValues();
+        ContentValues c7 = new ContentValues();
+        ContentValues c8 = new ContentValues();
+        ContentValues c9 = new ContentValues();
+        ContentValues c10 = new ContentValues();
+        ContentValues c11 = new ContentValues();
+        ContentValues c12 = new ContentValues();
+        ContentValues c13 = new ContentValues();
+        ContentValues c14 = new ContentValues();
+        ContentValues c15 = new ContentValues();
+        ContentValues c16 = new ContentValues();
+        ContentValues c17 = new ContentValues();
+        ContentValues c18 = new ContentValues();
+        ContentValues c19 = new ContentValues();
+        ContentValues c20 = new ContentValues();
+        ContentValues c21 = new ContentValues();
+        ContentValues c22 = new ContentValues();
+        ContentValues c23 = new ContentValues();
+        ContentValues c24 = new ContentValues();
+        ContentValues c25 = new ContentValues();
         
         c1.put("Fish", "Aukšlė");
         c1.put("Forbid", "nėra");
@@ -458,7 +535,151 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         c5.put("Bait", "sliekas, vabzdžių lervos, apsiuva");
         c5.put("Bite", "vidutinis");
         db.insert("Calendar", null, c5);
+        c6.put("Fish", "Karšis");
+        c6.put("Forbid", "nėra");
+        c6.put("Month", "rugsėjis");
+        c6.put("Gear", "plūdine meškere, dugnine meškere");
+        c6.put("Bait", "sliekas, apsiuva, žirniai, kukurūzai");
+        c6.put("Bite", "vidutinis");
+        db.insert("Calendar", null, c6);
+        c7.put("Fish", "Kiršlys");
+        c7.put("Forbid", "draudžiama gaudyti natūralios kilmės masalais");
+        c7.put("Month", "rugsėjis");
+        c7.put("Gear", "museline meškere");
+        c7.put("Bait", "dirbtinės muselės");
+        c7.put("Bite", "geras");
+        db.insert("Calendar", null, c7);
+        c8.put("Fish", "Kuoja");
+        c8.put("Forbid", "nėra");
+        c8.put("Month", "rugsėjis");
+        c8.put("Gear", "plūdine meškere, palaidyne");
+        c8.put("Bait", "sliekas, musė ir jos lerva, apsiuva, dėlė, miltinė tešla, duona");
+        c8.put("Bite", "prastas");
+        db.insert("Calendar", null, c8);
 
+        c9.put("Fish", "Ešerys");
+        c9.put("Forbid", "nra");
+        c9.put("Month", "gruodis");
+        c9.put("Gear", "žiemine meškerėle");
+        c9.put("Bait", "sliekas, apsiuva, uodo trūklio lerva, blizgė, mikromasalai, avižėlė");
+        c9.put("Bite", "geras");
+        db.insert("Calendar", null, c9);
+        c10.put("Fish", "Karšis");
+        c10.put("Forbid", "nėra");
+        c10.put("Month", "gruodis");
+        c10.put("Gear", "dugnine ir žiemine meškerėle");
+        c10.put("Bait", "sliekas, apsiuva, uodo trūklio lerva, avižėlė");
+        c10.put("Bite", "prastas");
+        db.insert("Calendar", null, c10);
+        c11.put("Fish", "Kuoja");
+        c11.put("Forbid", "nėra");
+        c11.put("Month", "gruodis");
+        c11.put("Gear", "žiemine meškerėle, plūdine meškere");
+        c11.put("Bait", "sliekas, musės lerva, miltinė tešla, avižėlė");
+        c11.put("Bite", "vidutinis");
+        db.insert("Calendar", null, c11);
+
+        c12.put("Fish", "Aukšlė");
+        c12.put("Forbid", "nėra");
+        c12.put("Month", "lapkritis");
+        c12.put("Gear", "plūdine meškere");
+        c12.put("Bait", "musės lerva, sliekas");
+        c12.put("Bite", "prastas");
+        db.insert("Calendar", null, c12);
+        c13.put("Fish", "Ešerys");
+        c13.put("Forbid", "nėra");
+        c13.put("Month", "lapkritis");
+        c13.put("Gear", "plūdine ir dugnine meškere, spiningu");
+        c13.put("Bait", "sliekas, vabzdžių lervos, apsiuva, šoniplauka, blizgė, mikromasalai, avižėlė");
+        c13.put("Bite", "geras");
+        db.insert("Calendar", null, c13);
+        c14.put("Fish", "Kuoja");
+        c14.put("Forbid", "nėra");
+        c14.put("Month", "lapkritis");
+        c14.put("Gear", "plūdine meškere, palaidyne");
+        c14.put("Bait", "sliekas, musės lerva, šoniplauka, uodo trūklio lerva, miltinė tešla, avižėlė");
+        c14.put("Bite", "geras");
+        db.insert("Calendar", null, c14);
+
+        c15.put("Fish", "Aukšlė");
+        c15.put("Forbid", "nėra");
+        c15.put("Month", "spalis");
+        c15.put("Gear", "plūdine meškere");
+        c15.put("Bait", "musė, musės lerva, sliekas, apsiuva, miltinė tešla, duona");
+        c15.put("Bite", "vidutinis");
+        db.insert("Calendar", null, c15);
+        c16.put("Fish", "Ešerys");
+        c16.put("Forbid", "nėra");
+        c16.put("Month", "spalis");
+        c16.put("Gear", "plūdine ir dugnine meškere, spiningu");
+        c16.put("Bait", "sliekas, vabzdžių lervos, apsiuva, šoniplauka, dėle, blizgė, mikromasalai");
+        c16.put("Bite", "geras");
+        db.insert("Calendar", null, c16);
+        c17.put("Fish", "Karpis");
+        c17.put("Forbid", "nėra");
+        c17.put("Month", "spalis");
+        c17.put("Gear", "plūdine meškere, dugnine meškere");
+        c17.put("Bait", "sliekas, vabzdžių lervos, apsiuva");
+        c17.put("Bite", "prastas");
+        db.insert("Calendar", null, c17);
+        c18.put("Fish", "Karosas");
+        c18.put("Forbid", "nėra");
+        c18.put("Month", "spalis");
+        c18.put("Gear", "plūdine meškere");
+        c18.put("Bait", "sliekas, vabzdžių lervos, apsiuva");
+        c18.put("Bite", "prastas");
+        db.insert("Calendar", null, c18);
+        c19.put("Fish", "Karšis");
+        c19.put("Forbid", "nėra");
+        c19.put("Month", "spalis");
+        c19.put("Gear", "plūdine meškere, dugnine meškere");
+        c19.put("Bait", "sliekas, apsiuva, žirniai, kukurūzai");
+        c19.put("Bite", "prastas");
+        db.insert("Calendar", null, c19);
+        c20.put("Fish", "Kuoja");
+        c20.put("Forbid", "nėra");
+        c20.put("Month", "spalis");
+        c20.put("Gear", "plūdine meškere, palaidyne");
+        c20.put("Bait", "sliekas, musė ir jos lerva, apsiuva");
+        c20.put("Bite", "prastas");
+        db.insert("Calendar", null, c20);
+
+        c21.put("Fish", "Karpis");
+        c21.put("Forbid", "nėra");
+        c21.put("Month", "rugpjūtis");
+        c21.put("Gear", "plūdine meškere");
+        c21.put("Bait", "musė, musės lerva, sliekas, apsiuva, miltinė tešla, duona");
+        c21.put("Bite", "vidutinis");
+        db.insert("Calendar", null, c21);
+        c22.put("Fish", "Aukšlė");
+        c22.put("Forbid", "nėra");
+        c22.put("Month", "rugpjūtis");
+        c22.put("Gear", "plūdine meškere, dugnine meškere");
+        c22.put("Bait", "sliekas, vabzdžių lervos, apsiuva");
+        c22.put("Bite", "geras");
+        db.insert("Calendar", null, c22);
+        c23.put("Fish", "Karosas");
+        c23.put("Forbid", "nėra");
+        c23.put("Month", "rugpjūtis");
+        c23.put("Gear", "plūdine meškere");
+        c23.put("Bait", "sliekas, vabzdžių lervos, apsiuva");
+        c23.put("Bite", "geras");
+        db.insert("Calendar", null, c23);
+        c24.put("Fish", "Kiršlys");
+        c24.put("Forbid", "draudžiama gaudyti natūralios kilmės masalais");
+        c24.put("Month", "rugpjūtis");
+        c24.put("Gear", "museline meškere");
+        c24.put("Bait", "dirbtinės muselės");
+        c24.put("Bite", "prastas");
+        db.insert("Calendar", null, c24);
+
+        c25.put("Fish", "Aukšlė");
+        c25.put("Forbid", "draudžiama gaudyti natūralios kilmės masalais");
+        c25.put("Month", "liepa");
+        c25.put("Gear", "plūdine meškere");
+        c25.put("Bait", "musė, musės lerva, sliekas, apsiuva, miltinė tešla, duona");
+        c25.put("Bite", "prastas");
+        db.insert("Calendar", null, c25);
     }
     public void addFish(SQLiteDatabase db) {
 
