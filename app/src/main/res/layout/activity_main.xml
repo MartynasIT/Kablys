@@ -137,7 +137,6 @@
             android:layout_toRightOf="@+id/b" />
 
 
-
     </RelativeLayout>
     <ListView
         android:visibility="visible"

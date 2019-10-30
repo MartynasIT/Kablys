@@ -2,20 +2,27 @@ package com.example.kablys;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,6 +97,7 @@ public class WeatherFragment extends Fragment {
        fishBite = view.findViewById(R.id.biteNow);
        view.findViewById(R.id.biteNow).setSelected(true);
         WeatherNow = view.findViewById(R.id.weatherNow);
+
         URL weatherUrl = buildUrlForWeather(0);
         new FetchWeatherDetails().execute(weatherUrl);
         URL weatherNow = buildUrlForWeather(1);
@@ -108,7 +116,6 @@ public class WeatherFragment extends Fragment {
         protected String doInBackground(URL... urls) {
             URL weatherUrl = urls[0];
             String weatherSearchResults = null;
-
             try {
                 weatherSearchResults = NetworkUtils.getResponseFromHttpUrl(weatherUrl);
             } catch (IOException e) {
@@ -120,6 +127,7 @@ public class WeatherFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String weatherSearchResults) {
+
             if(weatherSearchResults != null && !weatherSearchResults.equals("") ) {
                 weatherArrayList = JsonFIveDays(weatherSearchResults);
             }
@@ -153,16 +161,17 @@ public class WeatherFragment extends Fragment {
         @Override
         protected void onPostExecute(String weatherSearchResults) {
             if(weatherSearchResults != null && !weatherSearchResults.equals("") ) {
+
             JsonNow(weatherSearchResults);
             }
-
-
+            
             super.onPostExecute(weatherSearchResults);
         }
     }
 
 
     private ArrayList<WeatherObject> JsonFIveDays(String weatherSearchResults) {
+
         if(weatherArrayList != null) {
             weatherArrayList.clear();
         }

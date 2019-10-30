@@ -111,8 +111,6 @@ public class FishVikiFragment extends Fragment {
         int i = 0;
         while (i < len) {
 
-            // if the i-th element is t
-            // then return the index
             if (fish.equals(arr[i])) {
                 return i;
             }

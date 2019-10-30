@@ -57,10 +57,13 @@ public class DatabaseAPI extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL("Create Table Challenges (ID Integer PRIMARY KEY AUTOINCREMENT, Challenge Text)");
 
+        sqLiteDatabase.execSQL("Create Table Tuturials (ID Integer PRIMARY KEY AUTOINCREMENT, Name Text, VideoId Text)");
+
         addFish(sqLiteDatabase);
         addForbiddenLocations(sqLiteDatabase);
         addCalendar(sqLiteDatabase);
         addChallenge(sqLiteDatabase);
+        addTutorial(sqLiteDatabase);
 
 
     }
@@ -91,12 +94,33 @@ public class DatabaseAPI extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        // return student list
         db.close();
         cursor.close();
         return fishes;
     }
 
+    public ArrayList<String[]> getTuturials() {
+        ArrayList<String[]> tuorials = new ArrayList<String[]>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Tuturials", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndex("ID"));
+                String TutID = String.valueOf(id);
+                String name = cursor.getString(cursor.getColumnIndex("Name"));
+                String url = cursor.getString(cursor.getColumnIndex("VideoId"));
+                tuorials.add( new String[]{name, url, TutID});
+
+            } while (cursor.moveToNext());
+        }
+
+
+        db.close();
+        cursor.close();
+        return tuorials;
+    }
 
     public void  UpdatePermit (Object username, String endTime){
         SQLiteDatabase db  = getReadableDatabase();
@@ -472,6 +496,44 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         db.insert("Challenges", null, c10);
     }
 
+    public void  addTutorial(SQLiteDatabase db) {
+        ContentValues c1 = new ContentValues();
+        ContentValues c2 = new ContentValues();
+        ContentValues c3 = new ContentValues();
+        ContentValues c4 = new ContentValues();
+        ContentValues c5 = new ContentValues();
+        ContentValues c6 = new ContentValues();
+        ContentValues c7 = new ContentValues();
+
+        c1.put("Name", "Linų žvejyba: kaip rasti vietą ir pradėti jų paiešką");
+        c1.put("VideoId", "cyvr5QknBFE");
+        c1.put("ID", 0);
+        db.insert("Tuturials", null, c1);
+        c2.put("Name", "Kaip surišti DROPSHOT sistemėlę žvejybai SPININGU");
+        c2.put("VideoId", "KZxPpwYyy_E");
+        c1.put("ID", 1);
+        db.insert("Tuturials", null, c2);
+        c3.put("Name", "Kaip surišti FEEDER sistemėlę žvejybai UPĖJE?");
+        c3.put("VideoId", "HT5_Gux8Yf4");
+        c3.put("ID", 2);
+        db.insert("Tuturials", null, c3);
+        c4.put("Name", "Apie WAGGLER PLŪDES labai detaliai");
+        c4.put("VideoId", "R5kW-4EPfzQ");
+        c4.put("ID", 3);
+        db.insert("Tuturials", null, c4);
+        c5.put("Name", "Kokį KABLIUKĄ su LOPETĖLE rinktis žvejybai FEEDER'iu?");
+        c5.put("VideoId", "SuyPV1gzNRo");
+        c5.put("ID", 4);
+        db.insert("Tuturials", null, c5);
+        c6.put("Name", "Kaip užverti SLIEKĄ ant PLAUKO sistemėlės KARŠIŲ žvejybai FEEDER'iu?");
+        c6.put("VideoId", "SXimJQb4EUM");
+        c6.put("ID", 5);
+        db.insert("Tuturials", null, c6);
+        c7.put("Name", "Kaip uždėti MUSĖS LERVAS ant plauko istemėlės?");
+        c7.put("VideoId", "V0ovNHWWQFA");
+        c7.put("ID", 6);
+        db.insert("Tuturials", null, c7);
+    }
 
     public void addCalendar(SQLiteDatabase db) {
         ContentValues c1 = new ContentValues();

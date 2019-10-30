@@ -136,6 +136,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                         new WeatherFragment()).commit();
                 getSupportActionBar().setTitle("Orai");
                 break;
+
+            case  R.id.nav_turotials:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new TutorialFragment()).commit();
+                getSupportActionBar().setTitle("Orai");
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
