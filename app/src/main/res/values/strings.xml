@@ -46,6 +46,7 @@
     <string name="mark_fishes_in_pond">Pažymėkite žuvis kurios čia veisiasi</string>
     <string name="fishes_in_this_pond">Žuvys šiame tvenkinyje</string>
     <string name="nav_calendar">Kalendorius</string>
+    <string name="fish_lenght">Ilgis</string>
 
     <string-array name="time_array">
         <item>"Pasirinkite laiką"</item>
@@ -81,6 +82,62 @@
         <item>"Mėnuo"</item>
         <item>"Metai"</item>
 
+    </string-array>
+
+    <string-array name="cought_amount">
+        <item>"Pasirinkite kiekį"</item>
+        <item>"1"</item>
+        <item>"2"</item>
+        <item>"3"</item>
+        <item>"4"</item>
+        <item>"5"</item>
+        <item>">50"</item>
+        <item>"1kg"</item>
+        <item>"2kg"</item>
+        <item>"3kg"</item>
+        <item>"4kg"</item>
+        <item>"5kg"</item>
+        <item>"6kg"</item>
+        <item>"7kg"</item>
+        <item>"Plakis"</item>
+
+    </string-array>
+
+    <string-array name="cought_fish">
+        <item>"Pasirinkite žuvį"</item>
+        <item>"šamas"</item>
+        <item>"ūsorius"</item>
+        <item>"lydeka"</item>
+        <item>"sterkas"</item>
+        <item>"ungurys"</item>
+        <item>"vėgėlė"</item>
+        <item>"šapalas"</item>
+        <item>"siauražnyplis vėžys"</item>
+
+
+        <item>"skersnukius"</item>
+        <item>"vijūnas"</item>
+        <item>"jūrinė nėgė"</item>
+        <item>"nėgių vingilius"</item>
+        <item>"šlakius"</item>
+        <item>"šamas"</item>
+        <item>"salačius"</item>
+        <item>"vijūnas"</item>
+        <item>"jūrinė nėgė"</item>
+        <item>"lynas"</item>
+
+
+    </string-array>
+
+    <string-array name="cought_lenght">
+        <item>"Pasirinkite ilgį"</item>
+        <item>"10cm"</item>
+        <item>"20cm"</item>
+        <item>"30cm"</item>
+        <item>"40cm"</item>
+        <item>"50cm"</item>
+        <item>"60cm"</item>
+        <item>"70cm"</item>
     </string-array>
 
     <string-array name="calendar_fishes">

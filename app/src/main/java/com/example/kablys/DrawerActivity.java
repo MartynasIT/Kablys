@@ -140,7 +140,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             case  R.id.nav_turotials:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new TutorialFragment()).commit();
-                getSupportActionBar().setTitle("Orai");
+                getSupportActionBar().setTitle("Pamokos");
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -162,7 +162,7 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
     public void giveChallenge()
     {
         Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         String currentDate = dateFormat.format(date);
         Calendar c1 = Calendar.getInstance();
         Date lastDate = null;
@@ -174,21 +174,23 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
 
         if (lastDate != null) {
 
-            if (lastDate.after(c1.getTime())) { // mes norime isuki pushinti tik 1 karta i diena
+            if (c1.getTime().before(lastDate)) { // mes norime isuki pushinti tik 1 karta i diena
 
-                PostChallenge(currentDate);
+                Session.set_ChallengeDate(currentDate);
+                PostChallenge();
             }
         }
 
         else
         {
-            PostChallenge(currentDate);
+            Session.set_ChallengeDate(currentDate);
+            PostChallenge();
         }
 
 
     }
 
-    private  void PostChallenge(String currentDate )
+    private  void PostChallenge()
     {
         ArrayList challenges = new ArrayList();
         challenges = db.getChallenges();
@@ -197,7 +199,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
         int min = 0;
         int pos = rn.nextInt(max - min + 1) + min;
         createNotification((String) challenges.get(pos));
-        Session.set_ChallengeDate(currentDate);
     }
 
     public void createNotification(String message) {

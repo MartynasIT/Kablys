@@ -64,8 +64,6 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         addCalendar(sqLiteDatabase);
         addChallenge(sqLiteDatabase);
         addTutorial(sqLiteDatabase);
-
-
     }
 
     @Override

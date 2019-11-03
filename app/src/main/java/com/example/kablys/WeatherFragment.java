@@ -20,9 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,17 +28,21 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 public class WeatherFragment extends Fragment {
 
     private ArrayList<WeatherObject> weatherArrayList = new ArrayList<>();
     private ListView listView;
-    private TextView temp, pressure, humidity, fishBite;
+    private ArrayList<String[]> Calendar = new ArrayList<String[]>();
+    private TextView temp, pressure, humidity, fishBite, toFish;
     private ImageView WeatherIcon;
+    DatabaseAPI db;
     private String pressureTendency;
-    private Button more, less;
     private RelativeLayout WeatherNow;
     Context ctx;
 
@@ -95,8 +96,12 @@ public class WeatherFragment extends Fragment {
        pressure = view.findViewById(R.id.PressureNow);
         humidity = view.findViewById(R.id.HumidityNow);
        fishBite = view.findViewById(R.id.biteNow);
-       view.findViewById(R.id.biteNow).setSelected(true);
+       view.findViewById(R.id.biteNow).setSelected(true); // kad veiktu scrolinimo animacija
         WeatherNow = view.findViewById(R.id.weatherNow);
+        toFish = view.findViewById(R.id.FishesToFIsh);
+        view.findViewById(R.id.FishesToFIsh).setSelected(true);
+        db = new DatabaseAPI(ctx);
+        Calendar = db.getCalendar();
 
         URL weatherUrl = buildUrlForWeather(0);
         new FetchWeatherDetails().execute(weatherUrl);
@@ -164,7 +169,7 @@ public class WeatherFragment extends Fragment {
 
             JsonNow(weatherSearchResults);
             }
-            
+
             super.onPostExecute(weatherSearchResults);
         }
     }
@@ -192,10 +197,10 @@ public class WeatherFragment extends Fragment {
 
                     JSONObject temperatureObj = resultsObj.getJSONObject("Temperature");
                     String minTemperature = temperatureObj.getJSONObject("Minimum").getString("Value");
-                    weatherObject.setMinTemp(minTemperature);
+                    weatherObject.setMinTemp(minTemperature +" C");
 
                     String maxTemperature = temperatureObj.getJSONObject("Maximum").getString("Value");
-                    weatherObject.setMaxTemp(maxTemperature);
+                    weatherObject.setMaxTemp(maxTemperature + " C");
 
                     JSONObject dayObj = resultsObj.getJSONObject("Day");
                     int condition = dayObj.getInt("Icon");
@@ -247,10 +252,12 @@ public class WeatherFragment extends Fragment {
 
                 double pressure = Double.parseDouble(pressureText);
                 String bite;
+                int d = 0;
                 if (pressure >= 30.50 && pressureTendency.equals("Steady"))
                 {
                     bite = "Prognozė: Vidutinis arba lėtas kibimas, dėl aukšto slėgio. Žvejok kantriai giliame vandenyje";
                     fishBite.setText(bite);
+                    d = 0;
                     fishBite.setTextColor(Color.YELLOW);
                 }
 
@@ -258,6 +265,7 @@ public class WeatherFragment extends Fragment {
                 {
                     bite = "Prognozė: Žuvys atkyvėja dėl augančio slėgio, bet aktyvumas dugną mėgstančių žuvų mažėja";
                     fishBite.setText(bite);
+                    d =1;
                     fishBite.setTextColor(Color.GREEN);
                 }
 
@@ -265,6 +273,7 @@ public class WeatherFragment extends Fragment {
                 {
                     bite = "Prognozė: Žuvų aktyvumas mažėja, dėl krentančio slėgio. Bet yra išimčių kai kurioms plėšrių žuvų rūšims, kaip šamai, lydekos";
                     fishBite.setText(bite);
+                    d = 0;
                     fishBite.setTextColor(Color.YELLOW);
                 }
 
@@ -272,6 +281,7 @@ public class WeatherFragment extends Fragment {
                 {
                     bite = "Prognozė: Normalus kibimas, pabandytk įvairius jaukus ir technikas";
                     fishBite.setText(bite);
+                    d = 1;
                     fishBite.setTextColor(Color.GREEN);
                 }
 
@@ -279,18 +289,56 @@ public class WeatherFragment extends Fragment {
                 {
                     bite = "Prognozė: Lėtas kibimas, dėl žemo slėgio, reiktu žvejoti giliai ir lėtai";
                     fishBite.setText(bite);
+                    d = 0;
                     fishBite.setTextColor(Color.RED);
                 }
 
+                else if (pressure <= 29.60 && pressureTendency.equals("Falling"))
+                {
+                    bite = "Prognozė: Lėtas kibimas, dėl žemo slėgio, reiktu žvejoti giliai ir lėtai";
+                    fishBite.setText(bite);
+                    d = 0;
+                    fishBite.setTextColor(Color.RED);
+                }
+
+
                 else
                 {
-                    bite = "Neaiškus kibimas";
+                    bite = "Neaiški prgonozė, paminėtos žuvys gali ir nekibti";
+                    d = 1;
                     fishBite.setText(bite);
 
                 }
 
 
+                DateFormat dateFormat = new SimpleDateFormat("MM");
+                Date date = new Date();
+               String monthNR = dateFormat.format(date);
+               String month = monthToStr(monthNR);
+               String fishes = "";
 
+               if (d!=0) {
+                   ArrayList alreadyPut = new ArrayList();
+                   Iterator<String[]> itr = Calendar.iterator();
+                   while (itr.hasNext()) {
+                       String[] array = itr.next();
+                       if (array[1].equals(month) && array[2].equals("geras") || array[2].equals("vidutinis") && !alreadyPut.contains(array[0]))
+                           fishes += array[0] +  ", ";
+                           alreadyPut.add(array[0]);
+                   }
+
+                   if (!fishes.equals("")) {
+                       toFish.setText("Gerai kibs: " + fishes);
+                       alreadyPut.clear();
+                       toFish.setTextColor(Color.GREEN);
+                   }
+
+               }
+
+                else  {
+                    toFish.setText("Gerai kibs: nelabai kas");
+                    toFish.setTextColor(Color.RED);
+                }
 
                int conditionNR = mJsonObject.getInt("WeatherIcon");
                 switch (conditionNR) {
@@ -416,6 +464,50 @@ public class WeatherFragment extends Fragment {
 
 
         }
+        }
+
+        private String monthToStr(String month)
+        {
+            switch (month) {
+                case "1":
+                    month = "sausis";
+                    break;
+                case "2":
+                    month = "vasaris";
+                    break;
+                case "3":
+                    month = "kovas";
+                    break;
+                case "4":
+                    month = "balandis";
+                    break;
+                case "5":
+                    month = "geguže";
+                    break;
+                case "6":
+                    month = "birželis";
+                    break;
+                case "7":
+                    month = "liepa";
+                    break;
+                case "8":
+                    month = "rugpjūtis";
+                    break;
+                case "9":
+                    month = "rugsėjis";
+                    break;
+                case "10":
+                    month = "spalis";
+                    break;
+                case "11":
+                    month = "lapkritis";
+                    break;
+                case "12":
+                    month = "gruodis";
+                    break;
+
+            }
+            return month;
         }
 
     }
