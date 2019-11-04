@@ -47,6 +47,8 @@
     <string name="fishes_in_this_pond">Žuvys šiame tvenkinyje</string>
     <string name="nav_calendar">Kalendorius</string>
     <string name="fish_lenght">Ilgis</string>
+    <string name="check_limits">Tikrinti</string>
+    <string name="limits_grant">Leidimas</string>
 
     <string-array name="time_array">
         <item>"Pasirinkite laiką"</item>
@@ -91,7 +93,11 @@
         <item>"3"</item>
         <item>"4"</item>
         <item>"5"</item>
-        <item>">50"</item>
+        <item>"6"</item>
+        <item>"7"</item>
+        <item>"8"</item>
+        <item>"9"</item>
+        <item>"10"</item>
         <item>"1kg"</item>
         <item>"2kg"</item>
         <item>"3kg"</item>
@@ -99,7 +105,7 @@
         <item>"5kg"</item>
         <item>"6kg"</item>
         <item>"7kg"</item>
-        <item>"Plakis"</item>
+        <item>"8kg"</item>
 
     </string-array>
 
@@ -112,20 +118,16 @@
         <item>"ungurys"</item>
         <item>"vėgėlė"</item>
         <item>"šapalas"</item>
-        <item>"siauražnyplis vėžys"</item>
-
-
         <item>"skersnukius"</item>
         <item>"vijūnas"</item>
         <item>"jūrinė nėgė"</item>
         <item>"nėgių vingilius"</item>
         <item>"šlakius"</item>
-        <item>"šamas"</item>
+        <item>"sykas"</item>
         <item>"salačius"</item>
         <item>"vijūnas"</item>
         <item>"jūrinė nėgė"</item>
         <item>"lynas"</item>
-
 
     </string-array>
 
@@ -138,7 +140,18 @@
         <item>"50cm"</item>
         <item>"60cm"</item>
         <item>"70cm"</item>
+        <item>"80cm"</item>
+        <item>"90cm"</item>
+        <item>"100cm"</item>
     </string-array>
+
+    <string-array name="cought_card">
+        <item>"Žvejo mėgėjo kortelė?"</item>
+        <item>"Taip"</item>
+        <item>"Ne"</item>
+
+    </string-array>
+
 
     <string-array name="calendar_fishes">
         <item>"Pasirinkite žuvį"</item>
@@ -172,5 +185,21 @@
         <item>"vasaris"</item>
         <item>"sausis"</item>
     </string-array>
+
+
+
+    <string name="moreLims">
+
+        MĖGĖJŲ ŽVEJYBOS REŽIMAS:  Vienu metu galima naudoti ne daugiau kaip 5 bučiukus ar samtelius vėžiams gaudyti ir 4 kitus mėgėjų žvejybos įrankius, iš jų ne daugiau kaip 2 įrankius (Kuršių mariose – 3 įrankius), kuriais žvejojama masalui naudojant žuvelę. Žvejodamas iš vandens transporto priemonės, vienas žvejys vienu metu gali naudoti ne daugiau kaip 2 meškeres, išskyrus atvejus, kai žvejojama iš inkaru ar kitomis priemonėmis sustabdytos vandens transporto priemonės. Bendras vienu metu naudojamų kabliukų skaičius negali viršyti 6 vienetų, išskyrus stintų ir seliavų žvejybą, kur bendras kabliukų skaičius gali būti 12 vienetų. Gaudant stintas ne nuo ledo, visos sugautos kitų rūšių žuvys, išskyrus plekšnes, nedelsiant paleidžiamos į tą patį vandens telkinį. Dvišakis ar trišakis kabliukas laikomas vienu. Rainuotųjų ir žymėtųjų vėžių gaudymui bučiukų ir samtelių kiekis neribojamas, šiuos vėžius taip pat leidžiama gaudyti rankomis ir graibštais, tačiau tokios žvejybos metu visi sugauti plačiažnypliai, siauražnypliai vėžiai ar žuvys turi būti nedelsiant paleisti į tą patį vandens telkinį.
+
+Leidžiama gaudyti masalui žuveles ir uodo trūklio lervas vienu tinkliniu samteliu masalui gaudyti, kurio skersmuo ne didesnis kaip 1 metras, tinklo akutės – ne didesnės kaip 10 mm. Uodo trūklio lervas leidžiama gaudyti ir kitokiu įrankiu, į kurį negali pakliūti žuvys ar vėžiai. Vienos žvejybos metu vienam žvejui leidžiama sugauti ne daugiau kaip 30 vienetų karosų, kuojų, ešerių ir kitų rūšių žuvų jauniklių, išskyrus plėšriąsias žuvis, Taisyklių 11.1–11.3 papunkčiuose išvardintas žuvis, į Globojamų žuvų ir vėžių rūšių sąrašą, patvirtintą Lietuvos Respublikos aplinkos ministro 1999 m. kovo 31 d. įsakymu Nr. 84 „Dėl globojamų žuvų ir vėžių rūšių sąrašo“, įrašytas žuvis. Mažesniuose kaip 100 ha vandens telkiniuose, kurie naudojami kaip žvejybos plotai, uodo trūklio lervas leidžiama gaudyti tik sutikus žvejybos ploto naudotojui, turint jo išduotą mėgėjų žvejybos leidimą, kuriame nurodyta teisė gaudyti uodo trūklio lervas. 8. Mėgėjų žvejybos varžybų metu gali būti nesilaikoma Taisyklių 6 punkte nurodytų apribojimų (jei po varžybų kiekvienas žvejys atgal į tą patį vandens telkinį paleidžia žuvis, viršijančias vienos žvejybos metu leidžiamą sugauti žuvų kiekį) gavus suderinimą raštu iš: 8.1. Aplinkos apsaugos departamento prie Aplinkos ministerijos (toliau – AAD) – valstybiniuose vandens telkiniuose, į kuriuos neišduoti leidimai naudoti žvejybos plotą; 8.2. žvejybos ploto naudotojo – valstybiniuose vandens telkiniuose, į kuriuos išduoti leidimai naudoti žvejybos plotą. Žvejybos ploto naudotojas žvejybos sąlygas turi suderinti su AAD; 8.3. valstybinio parko direkcijos (papildomai), jeigu vandens telkinys yra valstybinio parko teritorijoje. 9. Draudžiama veikla: 9.1. žvejoti naudojant elektros energiją, nuodingąsias ar sprogstamąsias medžiagas, šaunamuosius ar pneumatinius ginklus (išskyrus povandeninės žūklės šautuvus), akvalangus bei kitus autonominius kvėpavimo prietaisus, šaudyti žuvis povandeninei žūklei skirtais šautuvais iš valties, braidant ar vaikštant pakrantėmis, žvejoti duriamuoju, užkabinamuoju (kai žuvis gaudoma ar sugaunama kabliuku ar kabliu už bet kurios kūno dalies, išskyrus galvą), smogiamuoju būdu, du ir daugiau kartų viršijant leidžiamą naudoti žvejybos įrankių ar kabliukų skaičių, naudojant ne mėgėjų žvejybos įrankius ar juos išimant iš vandens telkinių, nesilaikant 9.3 papunkčio reikalavimų, vietose, kuriose žvejoti draudžiama ar tuo metu draudžiama, įrankiais ar masalais, kuriais tuo metu toje vietoje žvejoti draudžiama ar nustatyta tvarka neįgijus teisės žvejoti tokiais įrankiais ir masalais, pažeidžiant Taisyklių 11.1, 11.2 ir 11.4 papunkčių reikalavimus, žvejoti kiršlius, marguosius upėtakius, šlakius, lašišas natūralios kilmės masalais, bučiukais ar samteliais vėžiams gaudyti kitų rūšių žuvis nei siauražnypliai, žymėtieji ir rainuotieji vėžiai (toliau – draudžiami žvejybos būdai); 9.2. laikyti ar gabenti žeberklus, ūdas ir ne mėgėjų žvejybos įrankius (toliau – draudžiami žvejybos įrankiai), išskyrus atvejus, kai šie įrankiai teisės aktų nustatyta tvarka naudojami verslinei ar specialiajai žvejybai ar mokslo ir mokymo tikslais; 9.3. išimti iš vandens telkinių ūdas, tinklinius ne mėgėjų žvejybos įrankius ir žuvis iš jų. Asmenys, pastebėję vandens telkinyje nepažymėtus, kaip nustatyta Žvejybos įrankių ženklinimo tvarkoje, patvirtintoje Lietuvos Respublikos aplinkos ministro 2005 m. liepos 29 d. įsakymu Nr. D1-383 „Dėl Plombos aprašymo patvirtinimo bei Žvejybos įrankių ženklinimo tvarkos nustatymo“ (toliau – Žvejybos įrankių ženklinimo taisyklės), draudžiamus žvejybos įrankius, neišimdami jų iš vandens, privalo pranešti apie tai AAD telefonu 8(5) 273 2995 arba bendruoju pagalbos centro numeriu 112; 9.4. naudoti masalui gyvūnus, įrašytus į Invazinių rūšių sąrašą, ir Taisyklių 11.1–11.3 papunkčiuose išvardintas žuvis; 9.5. vykdyti povandeninę žūklę neturint žūklės vietoje ryškiai matomo plūduro, naudoti kitų nei unguriai žuvų povandeninei žūklei dvišakius ar daugiašakius strėlių antgalius; 9.6. būti vandens telkiniuose ar arčiau kaip 25 m nuo jų su mėgėjų žvejybos įrankiais, jei tuose vandens telkiniuose žvejyba draudžiama ar tuo metu draudžiama, ar neturint mėgėjų žvejybos leidimo, suteikiančio teisę žvejoti tame vandens telkinyje ar nemokamos žvejybos teisės, taip pat būti su povandeninei žūklei skirtais šautuvais vandens telkiniuose ar arčiau kaip 25 m nuo jų, jei tuose vandens telkiniuose povandeninė žūklė neleidžiama; 9.7. prekiauti mėgėjų žvejybos būdu sužvejotomis žuvimis ir iš jų pagamintais produktais; 9.8. būti vandens telkiniuose ant ledo, kai dėl ledo būklės kyla pavojus žmonių gyvybei ar sveikatai, susidarius plonai ledo dangai ar Lietuvos hidrometeorologijos tarnybai prie Aplinkos ministerijos paskelbus apie ledo būklę, kuri gali kelti pavojų žmonių gyvybei ar sveikatai. 10. Draudžiama žvejoti: 10.1. be mėgėjų žvejybos leidimo, suteikiančio teisę žvejoti tame vandens telkinyje, išskyrus asmenis, turinčius nemokamą žvejybos teisę. Liepos 6 d. ir rugpjūčio 15 d. visuose valstybiniuose vandens telkiniuose, kuriuose mėgėjų žvejyba nedraudžiama ir kuriuose neorganizuojama limituota žvejyba, ir Nemuno deltos regioninio parko vandens telkiniuose, kuriuose mėgėjų žvejyba nedraudžiama, visi asmenys turi teisę žvejoti nemokamai; 10.2. draudžiamais žvejybos įrankiais ar būdais; 10.3. naudojant prie mėgėjų žvejybos įrankių pritvirtintas ilgesnes kaip 20 cm gumas; 10.4. siauražnyplius vėžius kitais žvejybos įrankiais ar būdais, nei bučiukais ir samteliais vėžiams gaudyti. Šiais įrankiais sugautos visų rūšių žuvys turi būti nedelsiant paleistos atgal į tą patį vandens telkinį; 10.5. salačius naudojant daugiau kaip du masalus; 10.6. arčiau kaip 10 m atstumu nuo Žvejybos įrankių ženklinimo taisyklėmis nustatyta tvarka pažymėtų tinklinių ne mėgėjų žvejybos įrankių; 10.7. žuvų praplaukimo takuose (specialiuose įrenginiuose žuvims migruoti per užtvanką) ir arčiau kaip 100 m žemiau tvenkinių vandens nuleistuvų (užtvankų), esančių upės ruožuose, kurie patenka į ekologiniu ir kultūriniu požiūriu vertingų upių ar jų ruožų sąrašą, patvirtintą Lietuvos Respublikos Vyriausybės 2004 m. rugsėjo 8 d. nutarimu Nr. 1144 „Dėl ekologiniu ir kultūriniu požiūriu vertingų upių ar jų ruožų sąrašo patvirtinimo“; 10.8. ant ledo neturint priemonių, kuriomis pasinaudojus būtų galima įlūžus išlipti ant ledo – dviejų lanksčia jungtimi sujungtų smaigų; 10.9. nuo balandžio 20 d. iki gegužės 20 d. 400 m zonoje apie Dabintos pusiasalį Kauno mariose; 10.10. nuo gruodžio 15 d. iki sausio 15 d. Nemuno upėje nuo Gėgės upės žiočių iki Jurbarko tilto ir Nevėžio upėje nuo žiočių iki Babtų tilto tamsiuoju paros metu nuo saulės laidos iki patekėjimo (vadovaujantis įrašais kalendoriuje); 10.11. ištisus metus Taisyklių 1 priede išvardintuose vandens telkiniuose; 10.12. nuo rugsėjo 16 d. iki spalio 15 d. taisyklių 5 priede nurodytuose upių ruožuose; 10.13. nuo spalio 1 d. iki gruodžio 31 d. Taisyklių 2 priede išvardintose upėse; 10.14. nuo rugsėjo 16 d. iki spalio 15 d. be žvejo mėgėjo kortelių ar neturint nemokamos žvejybos teisės Taisyklių 3 priede nurodytuose upių ruožuose, išskyrus rainuotųjų ir žymėtųjų vėžių gaudymą bučiukais ir samteliais vėžiams gaudyti; 10.15. nuo spalio 16 d. iki gruodžio 25 d. Taisyklių 4 priede nurodytuose upių ruožuose; 10.16. nuo rugsėjo 16 d. iki spalio 15 d. praėjus daugiau kaip valandai po saulės laidos ar likus daugiau kaip valandai iki saulės patekėjimo (pagal kalendoriuje nurodytą laiką) (pagal kalendoriuje nurodytą laiką) Taisyklių 3 priede nurodytuose upių ruožuose; 10.17. nuo liepos 1 d. iki lapkričio 1 d. taisyklių 6 priede nurodytuose upių ruožuose; 10.18. nuo rugsėjo 16 d. iki gruodžio 25 d. Neryje nuo Žirmūnų tilto iki Valakupių tilto Vilniaus mieste naudojant dirbtinius masalus ar žuvelę; 10.19. nuo sausio 1 d. iki balandžio 20 d. žvejoti masalui naudojant žuvelę (išskyrus žvejybą Kuršių mariose ir žvejybą žuvies gabalėliu); 10.20. nuo spalio 16 d. iki gruodžio 25 d. Šventosios upėje nuo Dagios žiočių iki Kavarsko užtvankos naudojant dirbtinius masalus ar žuvelę; 10.21. tvenkiniuose jų vandens išleidimo metu, kai numatyta visiškai išleisti vandenį; 10.22. Vilnios upėje nuo žiočių iki Rokantiškių užtvankos natūralios kilmės masalais ir naudojant daugiau kaip vieną vienšakį kabliuką; 10.23. Neryje nuo saulės laidos iki patekėjimo (pagal kalendoriuje nurodytą laiką) nuo kovo 20 d. iki balandžio 20 d.
+
+
+
+
+
+
+    </string>
+
 
 </resources>

@@ -49,7 +49,13 @@ public class RegisterActivity extends AppCompatActivity {
             connection = true;
         }
         else
+        {
             connection = false;
+            Toast.makeText(RegisterActivity.this, "Nėra Interneto ryšio!",
+                    Toast.LENGTH_LONG).show();
+
+        }
+
 
 
         TextViewlogin.setOnClickListener(new View.OnClickListener()

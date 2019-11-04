@@ -19,6 +19,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Random;
 
 public class BackgroundService extends Service {
     DatabaseAPI db;
@@ -40,7 +42,7 @@ public class BackgroundService extends Service {
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "KablysCHannel";
+            CharSequence name = "Notificationai";
             String description = "Reminder";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
@@ -86,12 +88,14 @@ public class BackgroundService extends Service {
                 }
 
                 checkDistance(); // tikriname ar zvejys nera arti vietos kur uzdrausta zvejoti
+                if (Session.get_status()) // jeigu vartotojas turi enablines challengus
+                    giveChallenge(); // duodame dienos isuki
 
-                handler.postDelayed(runnable, 600000); // kas kiek laiko kartos run funkcija (10min)
+                handler.postDelayed(runnable, 100000); // kas kiek laiko kartos run funkcija (1min)
             }
         };
 
-        handler.postDelayed(runnable, 5000); // po kiek laiko bus paleistas run nuo programos paleidimo
+        handler.postDelayed(runnable, 3000); // po kiek laiko bus paleistas run nuo programos paleidimo
     }
 
     @Override
@@ -192,6 +196,64 @@ public class BackgroundService extends Service {
 
         notificationManager.notify(2, builder.build());
     }
+
+    public void giveChallenge()
+    {
+        Date date = Calendar.getInstance().getTime();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        String currentDate = dateFormat.format(date);
+        Calendar c1 = Calendar.getInstance();
+        Date lastDate = null;
+        try {
+            lastDate = dateFormat.parse(Session.get_ChallengeDate());
+        } catch (ParseException| NullPointerException e) {
+
+        }
+
+
+        if (lastDate != null) {
+
+            if (c1.getTime().before(lastDate)) { // mes norime isuki pushinti tik 1 karta i diena
+
+                PostChallenge(currentDate);
+            }
+        }
+
+        else
+        {
+
+            PostChallenge(currentDate);
+        }
+
+
+    }
+
+    private  void PostChallenge(String currentDate)
+    {
+        ArrayList challenges = new ArrayList();
+        challenges = db.getChallenges();
+        Random rn = new Random();
+        int max = 10;
+        int min = 0;
+        int pos = rn.nextInt(max - min + 1) + min;
+        createNotification((String) challenges.get(pos), currentDate);
+    }
+
+    public void createNotification(String message, String currentDate) {
+        Session.set_ChallengeDate(currentDate);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_android)
+                .setContentTitle("Šios dienos išukis")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationManager.notify(4, builder.build());
+    }
+
 
 
 }

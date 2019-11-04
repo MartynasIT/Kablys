@@ -133,8 +133,10 @@ public class WeatherFragment extends Fragment {
         @Override
         protected void onPostExecute(String weatherSearchResults) {
 
+            WeatherAdapter weatherAdapter = new WeatherAdapter(ctx, weatherArrayList);
+
             if(weatherSearchResults != null && !weatherSearchResults.equals("") ) {
-                weatherArrayList = JsonFIveDays(weatherSearchResults);
+                weatherArrayList = JsonFIveDays(weatherSearchResults, weatherAdapter);
             }
 
 
@@ -175,7 +177,7 @@ public class WeatherFragment extends Fragment {
     }
 
 
-    private ArrayList<WeatherObject> JsonFIveDays(String weatherSearchResults) {
+    private ArrayList<WeatherObject> JsonFIveDays(String weatherSearchResults,  WeatherAdapter weatherAdapter) {
 
         if(weatherArrayList != null) {
             weatherArrayList.clear();
@@ -208,10 +210,11 @@ public class WeatherFragment extends Fragment {
 
 
                     weatherArrayList.add(weatherObject);
+                    weatherAdapter.notifyDataSetChanged();
                 }
 
                 if(weatherArrayList != null) {
-                    WeatherAdapter weatherAdapter = new WeatherAdapter(ctx, weatherArrayList);
+
                     listView.setAdapter(weatherAdapter);
                 }
 
@@ -226,10 +229,6 @@ public class WeatherFragment extends Fragment {
 
 
     private void JsonNow(String weatherSearchResults) {
-        if(weatherArrayList != null) {
-            weatherArrayList.clear();
-        }
-
 
         if(weatherSearchResults != null) {
             try {

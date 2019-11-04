@@ -59,9 +59,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             cont.startService(BackgroundService);
         }
 
-        if (Session.get_status()) // jeigu vartotojas turi enablines challengus
-        giveChallenge();
-
         NavigationView navView = findViewById(R.id.navigation_view);
         navView.setNavigationItemSelectedListener(this);
         View headerView = navView.getHeaderView(0);
@@ -142,6 +139,12 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
                         new TutorialFragment()).commit();
                 getSupportActionBar().setTitle("Pamokos");
                 break;
+
+            case  R.id.nav_limits:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new LimitsFragment()).commit();
+                getSupportActionBar().setTitle("Draudimai");
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -158,63 +161,6 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             super.onBackPressed();
         }
     }
-
-    public void giveChallenge()
-    {
-        Date date = Calendar.getInstance().getTime();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        String currentDate = dateFormat.format(date);
-        Calendar c1 = Calendar.getInstance();
-        Date lastDate = null;
-        try {
-            lastDate = dateFormat.parse(Session.get_ChallengeDate());
-        } catch (ParseException| NullPointerException e) {
-
-        }
-
-        if (lastDate != null) {
-
-            if (c1.getTime().before(lastDate)) { // mes norime isuki pushinti tik 1 karta i diena
-
-                Session.set_ChallengeDate(currentDate);
-                PostChallenge();
-            }
-        }
-
-        else
-        {
-            Session.set_ChallengeDate(currentDate);
-            PostChallenge();
-        }
-
-
-    }
-
-    private  void PostChallenge()
-    {
-        ArrayList challenges = new ArrayList();
-        challenges = db.getChallenges();
-        Random rn = new Random();
-        int max = 10;
-        int min = 0;
-        int pos = rn.nextInt(max - min + 1) + min;
-        createNotification((String) challenges.get(pos));
-    }
-
-    public void createNotification(String message) {
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_android)
-                .setContentTitle("Šios dienos išukis")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(message))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-        notificationManager.notify(4, builder.build());
-    }
-
 
 
 }

@@ -74,25 +74,89 @@
 
 
     <LinearLayout android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_below="@+id/fishy_spinner"
+    android:id="@+id/lwnght_spinner">
+
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_below="@+id/fishy_spinner"
-        android:id="@+id/lwnght_spinner">
+        android:layout_height="35dp"
+        android:textSize="18sp"
+        android:text="@string/fish_lenght"/>
+
+    <Spinner
+        android:id="@+id/spinner_lenght"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:verticalScrollbarPosition="left"
+        android:entries="@array/cought_lenght"/>
+
+</LinearLayout>
+
+    <LinearLayout android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/lwnght_spinner"
+        android:id="@+id/card_spinner">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:textSize="18sp"
-            android:text="@string/fish_lenght"/>
+            android:text="@string/limits_grant"/>
 
         <Spinner
-            android:id="@+id/spinner_lenght"
+            android:id="@+id/spinner_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:verticalScrollbarPosition="left"
-            android:entries="@array/cought_lenght"/>
+            android:entries="@array/cought_card"/>
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/card_spinner"
+        android:id="@+id/linear"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            android:text="Domina kiti draudimai?"/>
+        <TextView
+            android:id="@+id/moreLimits"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:textStyle="bold"
+            android:paddingLeft="10dp"
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:text="Skaityti"/>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/check_limits"
+        android:id="@+id/check_limits"
+        android:layout_below="@+id/linear"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/limit_text"
+        android:layout_marginTop="40dp"
+        android:text=""
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:layout_below="@+id/check_limits"/>
 
 </RelativeLayout>
 </ScrollView>

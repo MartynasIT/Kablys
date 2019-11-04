@@ -59,11 +59,14 @@ public class DatabaseAPI extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL("Create Table Tuturials (ID Integer PRIMARY KEY AUTOINCREMENT, Name Text, VideoId Text)");
 
+        sqLiteDatabase.execSQL("Create Table Limits (ID Integer PRIMARY KEY AUTOINCREMENT, Fish Text, Card Text,  Amount Text, Lenght Text)");
+
         addFish(sqLiteDatabase);
         addForbiddenLocations(sqLiteDatabase);
         addCalendar(sqLiteDatabase);
         addChallenge(sqLiteDatabase);
         addTutorial(sqLiteDatabase);
+        addLimits(sqLiteDatabase);
     }
 
     @Override
@@ -118,6 +121,30 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         db.close();
         cursor.close();
         return tuorials;
+    }
+
+    public ArrayList<String[]> getLimits() {
+        ArrayList<String[]> limits = new ArrayList<String[]>();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM Limits", null);
+
+        // Looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                String fish = cursor.getString(cursor.getColumnIndex("Fish"));
+                String amount = cursor.getString(cursor.getColumnIndex("Amount"));
+                String card = cursor.getString(cursor.getColumnIndex("Card"));
+                String lenght = cursor.getString(cursor.getColumnIndex("Lenght"));
+
+                limits.add( new String[]{fish, amount, lenght, card});
+
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        cursor.close();
+        return limits;
     }
 
     public void  UpdatePermit (Object username, String endTime){
@@ -458,6 +485,119 @@ public class DatabaseAPI extends SQLiteOpenHelper {
             db.insert("ForbiddenPlaces", null, c2);
 
         }
+
+    public void addLimits(SQLiteDatabase db) {
+
+        ContentValues c1 = new ContentValues();
+        ContentValues c2 = new ContentValues();
+        ContentValues c3 = new ContentValues();
+        ContentValues c4 = new ContentValues();
+        ContentValues c5 = new ContentValues();
+        ContentValues c6 = new ContentValues();
+        ContentValues c8 = new ContentValues();
+        ContentValues c9 = new ContentValues();
+        ContentValues c10 = new ContentValues();
+        ContentValues c11 = new ContentValues();
+        ContentValues c12 = new ContentValues();
+        ContentValues c14 = new ContentValues();
+        ContentValues c15 = new ContentValues();
+        ContentValues c16 = new ContentValues();
+        ContentValues c17 = new ContentValues();
+
+        c1.put("Fish", "šamas");
+        c1.put("Amount", "1");
+        c1.put("Card", "no");
+        c1.put("Lenght", "75");
+        db.insert("Limits", null, c1);
+
+        c2.put("Fish", "ūsorius");
+        c2.put("Amount", "2");
+        c2.put("Card", "no");
+        c2.put("Lenght", "0");
+        db.insert("Limits", null, c2);
+
+        c16.put("Fish", "lydeka");
+        c16.put("Amount", "3");
+        c16.put("Card", "no");
+        c16.put("Lenght", "0");
+        db.insert("Limits", null, c16);
+
+        c3.put("Fish", "sterkas");
+        c3.put("Amount", "3");
+        c3.put("Lenght", "0");
+        c3.put("Card", "no");
+        db.insert("Limits", null, c3);
+
+        c4.put("Fish", "ungurys");
+        c4.put("Amount", "3");
+        c4.put("Card", "no");
+        c4.put("Lenght", "0");
+        db.insert("Limits", null, c4);
+
+        c5.put("Fish", "vėgėlė");
+        c5.put("Amount", "5");
+        c5.put("Lenght", "45");
+        c5.put("Card", "no");
+        db.insert("Limits", null, c5);
+
+        c6.put("Fish", "šapalas");
+        c6.put("Amount", "99");
+        c6.put("Lenght", "30");
+        c6.put("Card", "no");
+        db.insert("Limits", null, c6);
+
+
+        c8.put("Fish", "skersnukius");
+        c8.put("Amount", "0");
+        c8.put("Card", "no");
+        c8.put("Lenght", "0");
+        db.insert("Limits", null, c8);
+
+        c9.put("Fish", "vijūnas");
+        c9.put("Amount", "0");
+        c9.put("Lenght", "0");
+        c9.put("Card", "no");
+        db.insert("Limits", null, c9);
+
+
+        c10.put("Fish", "nėgių vingilius");
+        c10.put("Amount", "0");
+        c10.put("Lenght", "0");
+        c10.put("Card", "no");
+        db.insert("Limits", null, c10);
+
+        c11.put("Fish", "sykas");
+        c11.put("Amount", "99");
+        c11.put("Lenght", "0");
+        c11.put("Card", "yes");
+        db.insert("Limits", null, c11);
+
+        c12.put("Fish", "salačius");
+        c12.put("Amount", "99");
+        c12.put("Lenght", "55");
+        c12.put("Card", "yes");
+        db.insert("Limits", null, c12);
+
+
+        c14.put("Fish", "jūrinė nėgė");
+        c14.put("Amount", "0");
+        c14.put("Lenght", "0");
+        c14.put("Card", "no");
+        db.insert("Limits", null, c14);
+
+        c15.put("Fish", "lynas");
+        c15.put("Amount", "99");
+        c15.put("Lenght", "25");
+        c15.put("Card", "no");
+        db.insert("Limits", null, c15);
+
+        c17.put("Fish", "šlakius");
+        c17.put("Amount", "99");
+        c17.put("Lenght", "65");
+        c17.put("Card", "yes");
+        db.insert("Limits", null, c17);
+
+    }
 
     public void addChallenge(SQLiteDatabase db) {
 
