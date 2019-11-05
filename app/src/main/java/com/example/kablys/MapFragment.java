@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -25,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +52,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -64,7 +68,6 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     public static final int ERROR_DIALOG_REQUEST = 9001;
     public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
     public static final int  PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
-    public static final int  PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 9004;
     private Context ctx;
     private GoogleMap mMap;
     private GoogleMap inPond;
@@ -72,7 +75,7 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     private  Location location;
     private static final float DEFAULT_ZOOM = 15f;
     public String fish;
-    boolean ok_pressed;
+    Button search;
     SessionManager sessionManager;
     DatabaseAPI db;
     private  ArrayList<Object[]> locations = new ArrayList<Object[]>();
@@ -111,12 +114,14 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         final View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-        //db.getLocations("snapsas");
-        //((AppCompatActivity)getActivity()).getSupportActionBar().hide();
-       // Toolbar toolbarMaps = rootView.findViewById(R.id.toolmaps);
-       // ((AppCompatActivity)getActivity()).setSupportActionBar(toolbarMaps);
+        search = rootView.findViewById(R.id.search_button);
+        search.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onMapSearch(rootView);
+            }
+        });
 
         final SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -183,10 +188,40 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
         return rootView;
     }
 
+    public void onMapSearch(View view) {
+        EditText locationSearch = view.findViewById(R.id.editText);
+        String location = locationSearch.getText().toString();
+        List<Address>addressList = null;
+
+        if (location != null || !location.equals("")) {
+            Geocoder geocoder = new Geocoder(ctx);
+            try {
+                addressList = geocoder.getFromLocationName(location, 1);
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try
+            {
+                Address address = addressList.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                float zoomLevel = 17.0f;
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
+
+            }
+
+            catch (IndexOutOfBoundsException e)
+            {
+
+            }
+
+        }
+    }
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-        builder.setMessage("This application requires GPS to work properly, do you want to enable it?")
+        builder.setMessage("Programai reikia GPS kad veiktu tinkamai, Įjungti?")
                 .setCancelable(false)
                 .setPositiveButton("Taip", new DialogInterface.OnClickListener() {
                     public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
@@ -280,33 +315,26 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
     }
 
     public boolean isServicesOK(){
-        Log.d(TAG, "isServicesOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(ctx);
 
         if(available == ConnectionResult.SUCCESS){
-            //everything is fine and the user can make map requests
-            Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
         }
         else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
-            //an error occured but we can resolve it
-            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), available, ERROR_DIALOG_REQUEST);
             dialog.show();
         }else{
-            Toast.makeText( ctx,"You can't make map requests", Toast.LENGTH_SHORT).show();
+            Toast.makeText( ctx,"Neveiks žemėlapis, nes nėra google paslaugų", Toast.LENGTH_SHORT).show();
         }
         return false;
     }
 
     private void moveCamera(LatLng latLng, float zoom){
-        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
 
     private void getDeviceLocation(){
-        Log.d(TAG, "getDeviceLocation: getting the devices current location");
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(ctx);
 
@@ -317,7 +345,6 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if(task.isSuccessful()){
-                            Log.d(TAG, "onComplete: found location!");
                             Location currentLocation = (Location) task.getResult();
                             if (currentLocation!=null)
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
@@ -342,19 +369,35 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
             Object[] array = itr.next();
             LatLng latLng = new LatLng(Double.parseDouble((String) array[1]), Double.parseDouble((String) array[0]));
             if (latLng.equals(marker.getPosition())) {
-                DialogCatch dial = new DialogCatch();
-                dial.setTargetFragment(MapFragment.this, 1);
-                dial.fish = (String) array[2];
-                dial.descr = (String) array[4];
-                dial.weight = (String) array[3];
+
+                DialogCatch dialCatch = new DialogCatch();
+                dialCatch.setTargetFragment(MapFragment.this, 2);
+                dialCatch.fish = (String) array[2];
+                dialCatch.descr = (String) array[4];
+                dialCatch.weight = (String) array[3];
                 if (array[5] != null) {
-                    dial.image = (byte[]) array[5];
+                    dialCatch.image = (byte[]) array[5];
                 }
-                dial.markerID = (int) array[6];
-                dial.show(getFragmentManager(), "Catch");
+                dialCatch.markerID = (int) array[6];
+                FragmentManager fm = getFragmentManager();
+                dialCatch.show(getFragmentManager(), "See fish");
+                fm.executePendingTransactions();
+                dialCatch.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        Intent SuccessIntent = new Intent(ctx, DrawerActivity.class);
+                        startActivity(SuccessIntent);
+                        // hard refresh nes neatsinaujina kitaip
+                    }
+                });
+
+
+
             }
 
         }
+
+
         // zuvims kurios veisiasi
 
         Iterator<String[]> pond = fishesInPond.iterator();
@@ -362,11 +405,21 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
             String[] array2 = pond.next();
             LatLng latLng2 = new LatLng(Double.parseDouble((String) array2[1]), Double.parseDouble((String) array2[0]));
             if (latLng2.equals(marker.getPosition()) && array2[3].equals("1")) {
-                DialogViewInPond dial2 = new DialogViewInPond();
-                dial2.setTargetFragment(MapFragment.this, 2);
-                dial2.fish = (String) array2[2];
-                dial2.id = array2[4];
-                dial2.show(getFragmentManager(), "View Pond");
+                DialogViewInPond dialInpond = new DialogViewInPond();
+                dialInpond.setTargetFragment(MapFragment.this, 2);
+                dialInpond.fish = array2[2];
+                dialInpond.id = array2[4];
+                FragmentManager fm = getFragmentManager();
+                dialInpond.show(getFragmentManager(), "View Pond");
+                fm.executePendingTransactions();
+                dialInpond.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        Intent SuccessIntent = new Intent(ctx, DrawerActivity.class);
+                        startActivity(SuccessIntent);
+                        // hard refresh nes neatsinaujina kitaip
+                    }
+                });
             }
 
         }
@@ -377,6 +430,7 @@ public class MapFragment extends Fragment  implements GoogleMap.OnMarkerClickLis
 
     public void refresh()
     {
+        // refreshinam kad nauji itemai atsirastu zemelepi
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             getFragmentManager().beginTransaction().detach(this).commitNow();
             getFragmentManager().beginTransaction().attach(this).commitNow();

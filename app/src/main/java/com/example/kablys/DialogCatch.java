@@ -69,7 +69,7 @@ public class DialogCatch extends DialogFragment {
         builder.setPositiveButton("Gerai", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
+                dialogInterface.cancel();
             }
 
         });
@@ -77,25 +77,8 @@ public class DialogCatch extends DialogFragment {
         builder.setNegativeButton("Pašalinti", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                new AlertDialog.Builder(ctx)
-                        .setTitle("Dėmesio!")
-                        .setMessage("Pašalinti pagautą žuvį?")
-                        .setPositiveButton("Taip", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        db.removeLocation((String) Session.get_username(), markerID);
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                                new MapFragment()).commit();
-
-                    }
-                })
-                        .setNegativeButton("Ne", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                     // nieko nedaryti
-                    }
-                })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-
+                db.removeLocation((String) Session.get_username(), markerID);
+                dialogInterface.dismiss();
             }
 
         });

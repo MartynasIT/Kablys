@@ -129,7 +129,6 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM Limits", null);
 
-        // Looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 String fish = cursor.getString(cursor.getColumnIndex("Fish"));
@@ -166,7 +165,6 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM ForbiddenPlaces", null);
 
-        // Looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 String longi = cursor.getString(cursor.getColumnIndex("long"));
@@ -207,7 +205,6 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM Permits WHERE User = ?", new String[] {String.valueOf(username)});
 
-        // Looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 String start = cursor.getString(cursor.getColumnIndex("StartTime"));
@@ -259,7 +256,6 @@ public class DatabaseAPI extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        // return student list
         db.close();
         cursor.close();
         return calendar;
@@ -272,7 +268,6 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM FishesinPond WHERE User = ?", new String[] {String.valueOf(username)});
 
-        // Looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(cursor.getColumnIndex("ID"));
@@ -285,7 +280,6 @@ public class DatabaseAPI extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        // return student list
         db.close();
         cursor.close();
         return fishes;
@@ -293,15 +287,9 @@ public class DatabaseAPI extends SQLiteOpenHelper {
 
     public ArrayList<Object[]> getLocations(Object username) {
         ArrayList<Object[]> locations = new ArrayList<Object[]>();
-        ArrayList<byte[]> images = new ArrayList<byte[]>();
-
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + "Locations";
-
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM Locations WHERE User = ?", new String[] {String.valueOf(username)});
 
-        // Looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(cursor.getColumnIndex("ID"));
@@ -316,7 +304,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        // return student list
+
         db.close();
         cursor.close();
         return locations;
@@ -363,7 +351,7 @@ public class DatabaseAPI extends SQLiteOpenHelper {
         SQLiteDatabase db  = getReadableDatabase();
         ContentValues cv = new ContentValues();
         boolean result = true;
-        cv.put("Password",passwd); //These Fields should be your String values of actual column names
+        cv.put("Password",passwd);
         try {
             db.update(TableName, cv, "Username=?", new String[] {username});
         } catch (SQLException e) {

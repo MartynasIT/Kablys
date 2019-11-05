@@ -138,11 +138,9 @@ public class DialogMap extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Result code is RESULT_OK only if the user selects an Image
         if (resultCode == Activity.RESULT_OK)
             switch (requestCode){
                 case GALLERY_REQUEST_CODE:
-                    //data.getData returns the content URI for the selected Image
                     selectedImage = data.getData();
                     try
                     {bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);}

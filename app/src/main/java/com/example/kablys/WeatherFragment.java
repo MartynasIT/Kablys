@@ -1,24 +1,17 @@
 package com.example.kablys;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
-import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import org.json.JSONArray;
@@ -83,14 +76,14 @@ public class WeatherFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle SavedInstanceState)
     {
-        return inflater.inflate(R.layout.activity_main, container, false);
+        return inflater.inflate(R.layout.fragment_weather, container, false);
     }
 
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-        listView = view.findViewById(R.id.idListView);
+        listView = view.findViewById(R.id.weatherList);
        temp = view.findViewById(R.id.TempNow);
        WeatherIcon = view.findViewById(R.id.conditionToday);
        pressure = view.findViewById(R.id.PressureNow);
@@ -122,7 +115,7 @@ public class WeatherFragment extends Fragment {
             URL weatherUrl = urls[0];
             String weatherSearchResults = null;
             try {
-                weatherSearchResults = NetworkUtils.getResponseFromHttpUrl(weatherUrl);
+                weatherSearchResults = JsonGettter.getJsonData(weatherUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -153,39 +146,39 @@ public class WeatherFragment extends Fragment {
 
         @Override
         protected String doInBackground(URL... urls) {
-            URL weatherUrl = urls[0];
-            String weatherSearchResults = null;
+            URL APIurl = urls[0];
+            String weatherResults = null;
 
             try {
-                weatherSearchResults = NetworkUtils.getResponseFromHttpUrl(weatherUrl);
+                weatherResults = JsonGettter.getJsonData(APIurl);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return weatherSearchResults;
+            return weatherResults;
         }
 
         @Override
-        protected void onPostExecute(String weatherSearchResults) {
-            if(weatherSearchResults != null && !weatherSearchResults.equals("") ) {
+        protected void onPostExecute(String weatherResults) {
+            if(weatherResults != null && !weatherResults.equals("") ) {
 
-            JsonNow(weatherSearchResults);
+            JsonNow(weatherResults);
             }
 
-            super.onPostExecute(weatherSearchResults);
+            super.onPostExecute(weatherResults);
         }
     }
 
 
-    private ArrayList<WeatherObject> JsonFIveDays(String weatherSearchResults,  WeatherAdapter weatherAdapter) {
+    private ArrayList<WeatherObject> JsonFIveDays(String weatherResults,  WeatherAdapter weatherAdapter) {
 
         if(weatherArrayList != null) {
             weatherArrayList.clear();
         }
 
-        if(weatherSearchResults != null) {
+        if(weatherResults != null) {
             try {
-                JSONObject rootObject = new JSONObject(weatherSearchResults);
+                JSONObject rootObject = new JSONObject(weatherResults);
                 JSONArray results = rootObject.getJSONArray("DailyForecasts");
 
                 for (int i = 0; i < results.length(); i++) {
@@ -228,11 +221,11 @@ public class WeatherFragment extends Fragment {
     }
 
 
-    private void JsonNow(String weatherSearchResults) {
+    private void JsonNow(String weatherResults) {
 
-        if(weatherSearchResults != null) {
+        if(weatherResults != null) {
             try {
-                JSONArray mJsonArray = new JSONArray(weatherSearchResults);
+                JSONArray mJsonArray = new JSONArray(weatherResults);
                 JSONObject mJsonObject = mJsonArray.getJSONObject(0);
 
                 JSONObject temperatureObj = mJsonObject.getJSONObject("Temperature");
@@ -451,10 +444,6 @@ public class WeatherFragment extends Fragment {
                         break;
 
                 }
-
-
-
-
 
 
             } catch (JSONException e) {

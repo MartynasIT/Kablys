@@ -60,21 +60,8 @@ public class DialogViewInPond extends DialogFragment {
         builder.setNegativeButton("Pašalinti", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                new AlertDialog.Builder(ctx)
-                        .setTitle("Dėmesio!")
-                        .setMessage("Pašalinti žuvis?")
-                        .setPositiveButton("Taip", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                db.removePond((String) Session.get_username(), id);
-                            }
-                        })
-                        .setNegativeButton("Ne", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // nieko nedaryti
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                db.removePond(Session.get_username(), id);
+                dialogInterface.dismiss();
 
             }
 

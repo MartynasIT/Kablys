@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/d">
     <TextView
-        android:id="@+id/tvDate"
+        android:id="@+id/Date"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:text="Data"
@@ -20,11 +20,11 @@
 
 
     <TextView
-        android:id="@+id/tvTemperature"
+        android:id="@+id/Temperature"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:text="Temperatura"
-        android:layout_below="@+id/tvDate"
+        android:layout_below="@+id/Date"
         android:textSize="19sp" />
 </RelativeLayout>
 
@@ -45,7 +45,7 @@
             android:textStyle="normal" />
 
         <TextView
-            android:id="@+id/tvHighTemperature"
+            android:id="@+id/HighTempe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,7 +71,7 @@
             android:textSize="19sp"/>
 
         <TextView
-            android:id="@+id/tvLowTemperature"
+            android:id="@+id/LowTemp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
