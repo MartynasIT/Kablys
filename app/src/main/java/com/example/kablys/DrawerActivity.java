@@ -93,8 +93,11 @@ public class DrawerActivity extends AppCompatActivity implements NavigationView.
             case R.id.nav_logout:
                 Session = new SessionManager(this);
                 Session.set_logged_in(false);
+                Session.set_username(null);
+                Session.set_username(null);
                 Intent LogOutIntent = new Intent(DrawerActivity.this, LoginActivicty.class);
                 startActivity(LogOutIntent);
+                stopService(new Intent(this, BackgroundService.class)); //sustabdome background servisa
                 finish();
                 break;
 

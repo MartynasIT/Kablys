@@ -78,24 +78,29 @@ public class BackgroundService extends Service {
         ForbiddenLocations = db.getForbiddenLocations();
         Session = new SessionManager(this);
         handler = new Handler();
-        runnable = new Runnable() {
-            public void run() {
-                try {
-                    checkPermits();
-                    permits.clear();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+
+        if (Session.is_logged_in() != false)
+        {
+            runnable = new Runnable() {
+                public void run() {
+                    try {
+                        checkPermits();
+                        permits.clear();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    checkDistance(); // tikriname ar zvejys nera arti vietos kur uzdrausta zvejoti
+                    if (Session.get_status()) // jeigu vartotojas turi enablines challengus
+                        giveChallenge(); // duodame dienos isuki
+
+                    handler.postDelayed(runnable, 10000); // kas kiek laiko kartos run funkcija (1min)
                 }
+            };
 
-                checkDistance(); // tikriname ar zvejys nera arti vietos kur uzdrausta zvejoti
-                if (Session.get_status()) // jeigu vartotojas turi enablines challengus
-                    giveChallenge(); // duodame dienos isuki
+            handler.postDelayed(runnable, 3000); // po kiek laiko bus paleistas run nuo programos paleidimo
+        }
 
-                handler.postDelayed(runnable, 100000); // kas kiek laiko kartos run funkcija (1min)
-            }
-        };
-
-        handler.postDelayed(runnable, 3000); // po kiek laiko bus paleistas run nuo programos paleidimo
     }
 
     @Override
@@ -206,6 +211,10 @@ public class BackgroundService extends Service {
         Date lastDate = null;
         try {
             lastDate = dateFormat.parse(Session.get_ChallengeDate());
+            Calendar c = Calendar.getInstance();
+            c.setTime(lastDate);
+            c.add(Calendar.DATE, 1);
+            lastDate = c.getTime();
         } catch (ParseException| NullPointerException e) {
 
         }
@@ -213,8 +222,10 @@ public class BackgroundService extends Service {
 
         if (lastDate != null) {
 
-            if (c1.getTime().before(lastDate)) { // mes norime isuki pushinti tik 1 karta i diena
+            if (System.currentTimeMillis() > lastDate.getTime()) { // mes norime isuki pushinti tik 1 karta i diena
 
+                Toast.makeText(this, Session.get_ChallengeDate(),
+                        Toast.LENGTH_SHORT).show();
                 PostChallenge(currentDate);
             }
         }
@@ -233,7 +244,7 @@ public class BackgroundService extends Service {
         ArrayList challenges = new ArrayList();
         challenges = db.getChallenges();
         Random rn = new Random();
-        int max = 10;
+        int max = 9;
         int min = 0;
         int pos = rn.nextInt(max - min + 1) + min;
         createNotification((String) challenges.get(pos), currentDate);
